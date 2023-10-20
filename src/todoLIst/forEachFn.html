@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forEach Function</title>
+</head>
+<body>
+
+    <script>
+        let numArr = [1,2,3,4,5];
+
+        // my forEach function
+        const forEachfn = (arr, fn) => {
+            for (let i = 0; i < arr.length; i++) {
+                 fn(arr[i],i);
+            } 
+        }
+       forEachfn(numArr, (e,i) => {
+            console.log(e,i)
+        });
+
+        // for each function predefined
+        numArr.forEach((element,i) => {
+           console.log(element,i) 
+        });
+    </script>
+    
+</body>
+</html>

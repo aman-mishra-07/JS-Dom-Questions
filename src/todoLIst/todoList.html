@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo list</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="flex flex-col gap-2 justify-center items-center w-full max-w-md border p-4 rounded-md">
+        <form id="todoForm" class="flex items-center gap-2 w-full">
+            <label for="taskInputBox" class="hidden">Enter Task</label>
+            <input type="text" name="taskInputBox" id="taskInputBox" class="border flex-1">
+           
+            <button type="submit" class=" border px-1 bg-slate-50" onclick="addTAsk()">Submit</button> 
+        </form>
+        <!-- <div id="message" class=""></div> -->
+        <ul id="taskList" class="w-full space-y-1">
+            
+        </ul>
+    </div>
+
+    <script>
+        
+        // const list = document.querySelector('#taskList')
+       
+        //     const task = document.createElement(`li`);
+        //     const taskInput = document.querySelector('#taskInputBox').value;
+        //     console.log(taskInput);
+        //     const text = document.createTextNode(taskInput);
+        //     task.appendChild(text);
+        //     list.appendChild(task);
+        //     console.log(list);
+        //     // console.log('hello');
+       
+        
+
+    </script>
+</body>
+
+</html>
