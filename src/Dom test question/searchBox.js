@@ -88,29 +88,35 @@ const users = [
 //    })
 // }
 // document.querySelector('#searchBox').addEventListener('input', filterList);
+// if (inputValue === "") {
+// } else {
+// }
 
 const searchBox = {
-  
+
     bindElement() {
-            let ul = document.querySelector('ul');
-            ul.innerHTML = "";
-            let inputValue = document.querySelector('#searchBox').value;
-        
-            if (inputValue !== "") {
-                ul.classList.remove("hidden");
-            } else {
-                ul.classList.add("hidden");
-            }
-            let result = users.filter((user) => user?.name?.toLowerCase().startsWith(inputValue))
-        
+        let result = [];
+        let ul = document.querySelector('ul');
+        ul.innerHTML = "";
+        let inputValue = document.querySelector('#searchBox').value.toLowerCase().trim();
+
+        if (inputValue) {
+            ul.classList.remove("hidden");
+            result = users.filter((user) => user?.name?.toLowerCase().startsWith(inputValue))
+        }
+        if (result.length === 0) {
+            ul.classList.add("hidden");  
+        }
+        if (result.length > 0) {
             result.forEach((elem) => {
                 let li = document.createElement('li');
                 let text = document.createTextNode(elem.name)
                 li.setAttribute('class', 'px-4 py-2 hover:bg-slate-100')
                 li.appendChild(text);
-                ul.appendChild(li)
-           })
+                ul.appendChild(li);
+            })
         }
+    }
 }
 document.querySelector('#searchBox').addEventListener('input', searchBox.bindElement);
 
