@@ -285,3 +285,6 @@ const products = [
     }
 }
 document.querySelector('#searchField').addEventListener('input', searchBox.bindElement);
+document.querySelector('#searchForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+})

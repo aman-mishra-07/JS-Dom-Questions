@@ -9,15 +9,16 @@
 </head>
 
 <body>
-    <div class="flex flex-col gap-2 justify-center items-center w-full max-w-md border p-4 rounded-md">
-        <form id="todoForm" class="flex items-center gap-2 w-full">
+    <div class="w-full min-h-screen flex flex-col items-center gap-4 ">
+        <h1 class="text-4xl font-semibold">Todo List</h1>
+        <form id="todoForm" class="w-full max-w-md flex items-center gap-4">
             <label for="taskInputBox" class="hidden">Enter Task</label>
-            <input type="text" name="taskInputBox" id="taskInputBox" class="border flex-1">
+            <input type="text" name="taskInputBox" id="taskInputBox" class="border p-2 flex-1">
 
-            <button type="submit" class=" border px-1 bg-slate-50">Submit</button>
+            <button type="submit" class=" border p-2 bg-slate-50">Submit</button>
         </form>
         <!-- <div id="message" class=""></div> -->
-        <ul id="taskList" class="w-full space-y-1">
+        <ul id="taskList" class="w-full max-w-md space-y-1">
         </ul>
         
     </div>
@@ -32,10 +33,10 @@
             addTask: function(val) {
                 this.todos.push(val)
                 this.taskInputBox.value = "";
-            },
-            removeTask : function(taskId){
-                this.todos.splice(taskId, 1)
             }, 
+            removeTask : function(taskIndex,length = 1) {
+                this.todos.splice(taskIndex,length)
+            },
             bind : function() {
                 if(this.taskInputBox.value.trim()){
                     this.addTask(this.taskInputBox.value.trim())
@@ -58,10 +59,19 @@
 
                         li.appendChild(span);
                         li.appendChild(delBtn);
-                        this.taskList.appendChild(li)
-                        
+                        this.taskList.appendChild(li);
+
+                    })   
+                }  
+                
+                    this.taskList.addEventListener('click', (e) => {
+                        e.target.children[0].style.textDecoration = 'line-through';
                     })
-                }    
+                    this.taskList.addEventListener('dblclick', (e) => {
+                        this.removeTask((e.target.parentNode.getAttribute('data-taskID')) - 1)
+                        e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+                    })
+                 
                
             }
         }
@@ -70,9 +80,7 @@
             todo.bind();
             
         })
-        document.querySelector('#taskList').addEventListener('click', (event) => {
-                    console.log(event.target.);
-                })
+       
 
 
 
