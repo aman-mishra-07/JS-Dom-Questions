@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Task List</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <script>
+        (function () {
+            const todo = {
+                todos: [],
+
+                // Section
+                createSection: {
+                    tag: document.createElement('section'),
+                    attr: {
+                        className: 'w-full min-h-screen p-20 bg-slate-50 space-y-4'
+                    }
+                },
+
+                //heading
+                createHeading: {
+                    tag: document.createElement('h1'),
+                    attr: {
+                        className: 'text-3xl font-bold'
+                    }
+                },
+
+                //form 
+                createForm: {
+                    tag: document.createElement('form'),
+                    attr: {
+                        id: 'task-Form',
+                        className: 'space-x-2',
+                        method: 'post'
+                    }
+                },
+
+                // children Elements of form
+                formElements: {
+                    // Label
+                    createLabel: {
+                        tag: document.createElement('label'),
+                        attr: {
+                            for: "taskInputBox",
+                            className: "text-lg font-semibold"
+                        }
+                    },
+                    // input
+                    createInput: {
+                        tag: document.createElement('input'),
+                        attr: {
+                            type: 'text',
+                            name: "taskInputBox",
+                            id: "taskInputBox",
+                            className: "p-2 rounded-md border",
+                            placeholder: 'Enter Task...'
+                        }
+                    },
+                    // submit Button
+                    createSubmitBtn: {
+                        tag: document.createElement('button'),
+                        attr: {
+                            type: 'submit',
+                            className: "bg-slate-100 font-semibold border px-4 py-2 rounded-md"
+                        }
+                    }
+                },
+                createTable: {
+                    tag: document.createElement('table'),
+                    attr: {
+                        className: "border w-full max-w-4xl",
+                    },
+                    createTableHead: {
+                        tag: document.createElement('thead'),
+                        createRow: {
+                            tag: document.createElement('tr'),
+                            attr: {
+                                className: 'bg-slate-200'
+                            },
+                            createTd1: {
+                                tag: document.createElement('td'),
+                                attr: {
+                                    className: 'p-2 w-3/4'
+                                }
+                            },
+                            createTd2: {
+                                tag: document.createElement('td'),
+                                attr: {
+                                    className: 'p-2'
+                                }
+                            }
+                        }
+                    },
+                    createTableBody: {
+                        tag: document.createElement('tbody'),
+                        attr: { className: "divide-y", id: 'taskList' },
+
+                        // child
+                        createRow: {
+                            tag: document.createElement('tr'),
+                            attr: {
+                                className: 'p-2 w-3/4 font-medium'
+                            },
+                            createTd1: {
+                                tag: document.createElement('td'),
+                                attr: {
+                                    className: 'p-2'
+                                }
+                            },
+                            createTd2: {
+                                tag: document.createElement('td'),
+                                attr: {
+                                    className: 'p-2 flex items-center justify-end space-x-4 text-end'
+                                }
+                            }
+
+                        },
+                    },
+
+                },
+                baseStructure: function () {
+                    // created section
+                    let sectionTag = Object.assign(this.createSection.tag, this.createSection.attr);
+
+                    //appended heading
+                    let heading = Object.assign(this.createHeading.tag, this.createHeading.attr);
+                    heading.innerHTML = 'Todolist';
+                    sectionTag.appendChild(heading);
+
+                    // created form
+                    let taskInputForm = Object.assign(this.createForm.tag, this.createForm.attr);
+                    sectionTag.appendChild(taskInputForm);
+
+                    // form child 
+                    let taskLable = Object.assign(this.formElements.createLabel.tag, this.formElements.createLabel.attr);
+                    taskLable.innerHTML = 'Task';
+                    taskInputForm.appendChild(taskLable);
+
+                    let taskInput = Object.assign(this.formElements.createInput.tag, this.formElements.createInput.attr);
+                    taskInputForm.appendChild(taskInput)
+
+                    let submitBtn = Object.assign(this.formElements.createSubmitBtn.tag, this.formElements.createSubmitBtn.attr);
+                    submitBtn.innerHTML = 'Add Task'
+                    taskInputForm.appendChild(submitBtn);
+
+                    // task table
+                    let taskTable = Object.assign(this.createTable.tag, this.createTable.attr);
+                    sectionTag.appendChild(taskTable);
+
+                    let tableHead = this.createTable.createTableHead.tag;
+                    taskTable.appendChild(tableHead);
+
+                    let tableHeadRow = Object.assign(this.createTable.createTableHead.createRow.tag, this.createTable.createTableHead.createRow.attr)
+                    tableHead.appendChild(tableHeadRow);
+
+                    let taskHeading = Object.assign(this.createTable.createTableHead.createRow.createTd1.tag, this.createTable.createTableHead.createRow.createTd1.attr);
+                    taskHeading.innerHTML = 'Task';
+                    tableHeadRow.appendChild(taskHeading);
+
+                    let taskAction = Object.assign(this.createTable.createTableHead.createRow.createTd2.tag, this.createTable.createTableHead.createRow.createTd2.attr);
+                    taskAction.innerHTML = 'Action';
+                    tableHeadRow.appendChild(taskAction);
+
+                    let tableBody = Object.assign(this.createTable.createTableBody.tag, this.createTable.createTableBody.attr)
+
+                    taskTable.appendChild(tableBody);
+
+
+
+                    document.body.appendChild(sectionTag);
+                },
+                addToArray: function (value) {
+                    this.todos.push(value);
+                    document.querySelector('#taskInputBox').value = '';
+
+
+                },
+
+                addTask: function () {
+                    let taskInputBoxValue = document.querySelector('#taskInputBox').value.trim();
+
+                    if (taskInputBoxValue) {
+                        this.addToArray(taskInputBoxValue);
+                        let tbody = document.querySelector('table tbody');
+
+                        this.createTable.createTableBody.innerHTML = ''
+
+                        tbody.innerHTML = '';
+
+
+
+                        this.todos.forEach((task, i) => {
+                            let newRow = document.createElement('tr');
+                            newRow.setAttribute('class', 'p-2 w-3/4 font-medium')
+                            newRow.setAttribute('data-taskId', i + 1);
+
+
+                            let td1 = document.createElement('td');
+                            td1.innerHTML = task;
+                            td1.setAttribute('class', 'p-2')
+                            newRow.appendChild(td1);
+
+
+                            let td2 = document.createElement('td');
+                            td2.setAttribute('class', 'p-2 flex items-center justify-end gap-4')
+                            newRow.appendChild(td1);
+
+                            let statusBtn = document.createElement('button');
+                            statusBtn.innerHTML = 'completed';
+                            statusBtn.setAttribute('type', 'button');
+                            statusBtn.setAttribute('data-btnType', 'taskStatusBtn');
+                            statusBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
+
+                            let removeBtn = document.createElement('button');
+                            removeBtn.innerHTML = 'Remove';
+                            removeBtn.setAttribute('type', 'button');
+                            removeBtn.setAttribute('data-btnType', 'taskRemoveBtn');
+                            removeBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
+
+                            td2.appendChild(statusBtn)
+                            td2.appendChild(removeBtn)
+
+                            newRow.appendChild(td2);
+
+                            tbody.appendChild(newRow);
+
+                            newRow.addEventListener('click', (e) => {
+                                
+                            if (e.target.getAttribute('data-btnType') === 'taskStatusBtn') {
+                            
+                                e.target.style.backgroundColor = 'red';
+                                e.target.innerHTML = 'incomplete';
+                                e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
+                            }
+                            else if (e.target.getAttribute('data-btnType') === 'taskRemoveBtn') {
+                                let taskId = e.target.parentNode.parentNode.getAttribute('data-taskId');
+                                if(this.todos.length > 1){
+                                    this.todos.splice(taskId - 1, 1);
+                                }
+                                else{
+                                    this.todos.pop()
+                                }
+                                this.addTask();
+                                
+                                e.target.parentNode.parentNode.remove();
+                            }
+                         
+                        })
+
+                    })
+
+
+
+
+                }
+
+
+            },
+        }
+            todo.baseStructure();
+
+
+
+        document.querySelector('#task-Form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            todo.addTask()
+        })
+
+        }) ()
+
+
+    </script>
+    </section>
+</body>
+
+</html>
