@@ -8,11 +8,14 @@
     <link rel="stylesheet" href="/dist/output.css">
 </head>
 
+
+
 <body>
     <script>
         (function () {
             const todo = {
-                todos: [],
+                storeData: JSON.parse(localStorage.getItem('todos')) || [],
+                // todos: [],
 
                 // Section
                 createSection: {
@@ -21,7 +24,6 @@
                         className: 'w-full min-h-screen p-20 bg-slate-50 space-y-4'
                     }
                 },
-
                 //heading
                 createHeading: {
                     tag: document.createElement('h1'),
@@ -29,17 +31,15 @@
                         className: 'text-3xl font-bold'
                     }
                 },
-
                 //form 
                 createForm: {
                     tag: document.createElement('form'),
                     attr: {
                         id: 'task-Form',
-                        className: 'space-x-2',
+                        className: 'space-y-2',
                         method: 'post'
                     }
                 },
-
                 // children Elements of form
                 formElements: {
                     // Label
@@ -123,7 +123,7 @@
                     },
 
                 },
-                baseStructure: function () {
+                render: function () {
                     // created section
                     let sectionTag = Object.assign(this.createSection.tag, this.createSection.attr);
 
@@ -137,16 +137,38 @@
                     sectionTag.appendChild(taskInputForm);
 
                     // form child 
+                    let inputBoxContainer = document.createElement('div'); 
+                    inputBoxContainer.setAttribute('class', 'space-x-2');
+                    
+                    
                     let taskLable = Object.assign(this.formElements.createLabel.tag, this.formElements.createLabel.attr);
                     taskLable.innerHTML = 'Task';
-                    taskInputForm.appendChild(taskLable);
+                    inputBoxContainer.appendChild(taskLable);
 
                     let taskInput = Object.assign(this.formElements.createInput.tag, this.formElements.createInput.attr);
-                    taskInputForm.appendChild(taskInput)
-
+                    inputBoxContainer.appendChild(taskInput)
+                    
                     let submitBtn = Object.assign(this.formElements.createSubmitBtn.tag, this.formElements.createSubmitBtn.attr);
                     submitBtn.innerHTML = 'Add Task'
-                    taskInputForm.appendChild(submitBtn);
+                    inputBoxContainer.appendChild(submitBtn);
+                    
+                    taskInputForm.appendChild(inputBoxContainer);
+                    
+                    // search and filter
+                    let searchBoxContainer = document.createElement('div');
+                    searchBoxContainer.setAttribute('class', 'flex items-center justify-between')
+                    let searchArrtibutes = {
+                        type : 'search',
+                        id : 'searchTask',
+                        name : 'searchTask',
+                        placeholder : 'Search Task...',
+                        className : 'p-2 rounded-md border max-w-4xl outline-none'
+                    }
+                    let taskSearchBox = document.createElement('input')
+                    Object.assign(taskSearchBox, searchArrtibutes)
+                    searchBoxContainer.appendChild(taskSearchBox)
+                    taskInputForm.appendChild(searchBoxContainer);
+
 
                     // task table
                     let taskTable = Object.assign(this.createTable.tag, this.createTable.attr);
@@ -169,109 +191,107 @@
                     let tableBody = Object.assign(this.createTable.createTableBody.tag, this.createTable.createTableBody.attr)
 
                     taskTable.appendChild(tableBody);
-
-
-
                     document.body.appendChild(sectionTag);
                 },
+
                 addToArray: function (value) {
-                    this.todos.push(value);
+                    let newTask = { taskId: Date.now(), taskName: value }
+                    this.storeData.push(newTask);
+                    localStorage.setItem('todos', JSON.stringify(this.storeData))
+                    this.addToUi();
                     document.querySelector('#taskInputBox').value = '';
-
-
                 },
 
-                addTask: function () {
-                    let taskInputBoxValue = document.querySelector('#taskInputBox').value.trim();
+                deleteFromUi: function (taskRowId) {
+                    this.storeData = this.storeData.filter((item) => item.taskId !== +taskRowId);
+                    localStorage.setItem('todos', JSON.stringify(this.storeData));
+                    this.addToUi();
+                },
+                addToUi: function () {
+                    console.log(this.storeData);
+                    let tbody = document.querySelector('table tbody');
 
-                    if (taskInputBoxValue) {
-                        this.addToArray(taskInputBoxValue);
-                        let tbody = document.querySelector('table tbody');
+                    this.createTable.createTableBody.innerHTML = ''
 
-                        this.createTable.createTableBody.innerHTML = ''
-
-                        tbody.innerHTML = '';
-
-
-
-                        this.todos.forEach((task, i) => {
-                            let newRow = document.createElement('tr');
-                            newRow.setAttribute('class', 'p-2 w-3/4 font-medium')
-                            newRow.setAttribute('data-taskId', i + 1);
-
-
-                            let td1 = document.createElement('td');
-                            td1.innerHTML = task;
-                            td1.setAttribute('class', 'p-2')
-                            newRow.appendChild(td1);
+                    tbody.innerHTML = '';
+                    this.storeData.forEach((task, i) => {
+                        let newRow = document.createElement('tr');
+                        newRow.setAttribute('class', 'p-2 w-3/4 font-medium')
+                        newRow.setAttribute('data-taskId', task.taskId);
+                        let td1 = document.createElement('td');
+                        td1.innerHTML = task.taskName;
+                        td1.setAttribute('class', 'p-2')
+                        newRow.appendChild(td1);
 
 
-                            let td2 = document.createElement('td');
-                            td2.setAttribute('class', 'p-2 flex items-center justify-end gap-4')
-                            newRow.appendChild(td1);
+                        let td2 = document.createElement('td');
+                        td2.setAttribute('class', 'p-2 flex items-center justify-end gap-4')
+                        newRow.appendChild(td1);
 
-                            let statusBtn = document.createElement('button');
-                            statusBtn.innerHTML = 'completed';
-                            statusBtn.setAttribute('type', 'button');
-                            statusBtn.setAttribute('data-btnType', 'taskStatusBtn');
-                            statusBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
+                        let statusBtn = document.createElement('button');
+                        statusBtn.innerHTML = 'completed';
+                        statusBtn.setAttribute('type', 'button');
+                        statusBtn.setAttribute('data-btnType', 'taskStatusBtn');
+                        statusBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
 
-                            let removeBtn = document.createElement('button');
-                            removeBtn.innerHTML = 'Remove';
-                            removeBtn.setAttribute('type', 'button');
-                            removeBtn.setAttribute('data-btnType', 'taskRemoveBtn');
-                            removeBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
+                        let removeBtn = document.createElement('button');
+                        removeBtn.innerHTML = 'Remove';
+                        removeBtn.setAttribute('type', 'button');
+                        removeBtn.setAttribute('data-btnType', 'taskRemoveBtn');
+                        removeBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
 
-                            td2.appendChild(statusBtn)
-                            td2.appendChild(removeBtn)
+                        td2.appendChild(statusBtn);
+                        td2.appendChild(removeBtn);
 
-                            newRow.appendChild(td2);
+                        newRow.appendChild(td2);
 
-                            tbody.appendChild(newRow);
+                        tbody.appendChild(newRow);
 
-                            newRow.addEventListener('click', (e) => {
-                                
+                        let flag = 0;
+                        newRow.addEventListener('click', (e) => {
                             if (e.target.getAttribute('data-btnType') === 'taskStatusBtn') {
-                            
-                                e.target.style.backgroundColor = 'red';
-                                e.target.innerHTML = 'incomplete';
-                                e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
+
+                                if (flag === 0) {
+                                    e.target.style.backgroundColor = 'red';
+                                    e.target.innerHTML = 'incomplete';
+                                    e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
+                                    flag = 1;
+                                } else {
+                                    e.target.style.backgroundColor = 'green';
+                                    e.target.innerHTML = 'completed';
+                                    e.target.parentNode.parentNode.children[0].style.textDecoration = '';
+                                    flag = 0
+                                }
+
                             }
                             else if (e.target.getAttribute('data-btnType') === 'taskRemoveBtn') {
-                                let taskId = e.target.parentNode.parentNode.getAttribute('data-taskId');
-                                if(this.todos.length > 1){
-                                    this.todos.splice(taskId - 1, 1);
-                                }
-                                else{
-                                    this.todos.pop()
-                                }
-                                this.addTask();
-                                
-                                e.target.parentNode.parentNode.remove();
+                                let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
+                                console.log(taskRowId);
+                                this.deleteFromUi(taskRowId);
                             }
-                         
                         })
 
                     })
 
+                },
+                addTask: function () {
+                    let taskInputBoxValue = document.querySelector('#taskInputBox').value.trim();
+                    if (taskInputBoxValue) {
+                        this.addToArray(taskInputBoxValue);
+                    }
+                },
+
+            }
+            todo.render();
+            window.onload = todo.addToUi();
+
+            document.querySelector('#task-Form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                todo.addTask()
+            })
 
 
-
-                }
-
-
-            },
-        }
-            todo.baseStructure();
-
-
-
-        document.querySelector('#task-Form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            todo.addTask()
-        })
-
-        }) ()
+        })()
 
 
     </script>

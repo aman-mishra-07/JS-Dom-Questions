@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/dist/output.css">
 </head>
 
-<body>
+<body class="">
     <section class="w-full min-h-screen bg-slate-900 text-white p-10">
         <div class="">
             <h1 class="font-bold text-4xl">Home</h1>
@@ -43,7 +43,7 @@
             </div>
         </div>
     </section>
-    <section class="w-full min-h-screen bg-slate-800 text-white p-10">
+    <section class="w-full min-h-screen bg-slate-800 text-white p-10 relative">
         <div class="">
             <h1 class="font-bold text-4xl">Home</h1>
             <div class="flex justify-between items-center gap-10">
@@ -59,7 +59,44 @@
                     alt="nature" class="border-4 border-white ">
             </div>
         </div>
+        <button type="button" id="scrollBtn" class="h-20 w-20 bg-blue-600 fixed rounded-full right-10 bottom-10">Up</button>
     </section>
+
+    <script>
+        (function (){
+            const scrollButton = {
+                scrollBtn : document.querySelector('#scrollBtn'),
+                goToTop : function(){
+                    window.scrollBy(0,00);
+                }
+            }
+            scrollButton.scrollBtn.addEventListener('click', (e) => {
+                scrollButton.goToTop()
+                // console.log(e.target);
+            })
+        })()
+
+        // let lastKnownScrollPosition = 0;
+        // let ticking = false;
+
+        // function doSomething(scrollPos) {
+        //     console.log();
+        // }
+
+        // document.addEventListener("scroll", (event) => {
+        //     lastKnownScrollPosition = window.scrollY;
+
+        //     if (!ticking) {
+        //         window.requestAnimationFrame(() => {
+        //             doSomething(lastKnownScrollPosition);
+        //             ticking = false;
+        //         });
+
+        //         ticking = true;
+        //     }
+        // });
+
+    </script>
 </body>
 
 </html>

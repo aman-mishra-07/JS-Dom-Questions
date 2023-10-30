@@ -33,12 +33,15 @@
             box : document.querySelector("#box"),
             color : 'black',
             render : function() {
-                box.style.backgroundColor = this.color;
+                box.style.backgroundColor = this.color; 
             },
             bind : function(params) {
                 const btnBox = document.querySelectorAll('#buttonBox button');
                 btnBox.forEach((item) => {
+                    console.log(item);
                     item.addEventListener('click', (event) => {
+                        console.log(event);
+                        console.log(event.target.getAttribute('data-color'));
                         this.color = event.target.getAttribute('data-color');
                         this.render()
                     })
