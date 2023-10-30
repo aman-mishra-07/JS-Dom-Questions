@@ -36,7 +36,7 @@
                     tag: document.createElement('form'),
                     attr: {
                         id: 'task-Form',
-                        className: 'space-y-2',
+                        className: 'space-y-2 w-full max-w-4xl',
                         method: 'post'
                     }
                 },
@@ -70,6 +70,7 @@
                         }
                     }
                 },
+                //table 
                 createTable: {
                     tag: document.createElement('table'),
                     attr: {
@@ -156,17 +157,33 @@
                     
                     // search and filter
                     let searchBoxContainer = document.createElement('div');
-                    searchBoxContainer.setAttribute('class', 'flex items-center justify-between')
+                    searchBoxContainer.setAttribute('class', 'flex item-center justify-between gap-4')
                     let searchArrtibutes = {
                         type : 'search',
                         id : 'searchTask',
                         name : 'searchTask',
                         placeholder : 'Search Task...',
-                        className : 'p-2 rounded-md border max-w-4xl outline-none'
+                        className : 'px-4 py-2 rounded-md border max-w-4xl outline-none flex-1'
                     }
                     let taskSearchBox = document.createElement('input')
-                    Object.assign(taskSearchBox, searchArrtibutes)
+                    Object.assign(taskSearchBox, searchArrtibutes);
+
+                    let filterBox = document.createElement('select');
+                    filterBox.setAttribute('class', 'p-2 rounded-md border w-1/4 outline-none')
+                    filterBox.setAttribute('id', 'filterCondition')
+
+                    let filterOptions = ['ALL', 'Completed', 'Incomplete'];
+                    filterOptions.map((item, i) => {
+                        let option = document.createElement('option');
+                        
+                        option.value = item
+                        option.innerHTML = item;
+                        
+                        filterBox.appendChild(option)
+                    })
+
                     searchBoxContainer.appendChild(taskSearchBox)
+                    searchBoxContainer.appendChild(filterBox)
                     taskInputForm.appendChild(searchBoxContainer);
 
 
@@ -195,7 +212,7 @@
                 },
 
                 addToArray: function (value) {
-                    let newTask = { taskId: Date.now(), taskName: value }
+                    let newTask = { taskId: Date.now(), taskName: value , taskStatus : 'Assigned'}
                     this.storeData.push(newTask);
                     localStorage.setItem('todos', JSON.stringify(this.storeData))
                     this.addToUi();
@@ -207,14 +224,14 @@
                     localStorage.setItem('todos', JSON.stringify(this.storeData));
                     this.addToUi();
                 },
-                addToUi: function () {
-                    console.log(this.storeData);
+                addToUi: function (arr) {
+                    let array = arr ? arr : this.storeData
                     let tbody = document.querySelector('table tbody');
 
                     this.createTable.createTableBody.innerHTML = ''
 
                     tbody.innerHTML = '';
-                    this.storeData.forEach((task, i) => {
+                    array.forEach((task, i) => {
                         let newRow = document.createElement('tr');
                         newRow.setAttribute('class', 'p-2 w-3/4 font-medium')
                         newRow.setAttribute('data-taskId', task.taskId);
@@ -229,7 +246,7 @@
                         newRow.appendChild(td1);
 
                         let statusBtn = document.createElement('button');
-                        statusBtn.innerHTML = 'completed';
+                        statusBtn.innerHTML = 'Assigned';
                         statusBtn.setAttribute('type', 'button');
                         statusBtn.setAttribute('data-btnType', 'taskStatusBtn');
                         statusBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
@@ -250,27 +267,31 @@
                         let flag = 0;
                         newRow.addEventListener('click', (e) => {
                             if (e.target.getAttribute('data-btnType') === 'taskStatusBtn') {
-
+                                
                                 if (flag === 0) {
                                     e.target.style.backgroundColor = 'red';
                                     e.target.innerHTML = 'incomplete';
-                                    e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
+                                    
+                                    e.target.parentNode.parentNode.children[0].style.textDecoration = '';
                                     flag = 1;
                                 } else {
                                     e.target.style.backgroundColor = 'green';
                                     e.target.innerHTML = 'completed';
-                                    e.target.parentNode.parentNode.children[0].style.textDecoration = '';
+                                    e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
                                     flag = 0
                                 }
+
+                                // let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
+                                // this.storeData = this.storeData.filter((item) => item?.taskId === +taskRowId)
+                                // this.storeData[0].taskStatus = 'completed';
+
 
                             }
                             else if (e.target.getAttribute('data-btnType') === 'taskRemoveBtn') {
                                 let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
-                                console.log(taskRowId);
                                 this.deleteFromUi(taskRowId);
                             }
                         })
-
                     })
 
                 },
@@ -280,10 +301,61 @@
                         this.addToArray(taskInputBoxValue);
                     }
                 },
+                searchList : function(value) {
+                    let matchedData = this.storeData.filter((obj) => obj?.taskName?.toLowerCase().includes(value))
+                    if(matchedData.length > 0 ){
+                        this.addToUi(matchedData);
+                    }
+                },
+                filterTaskList : function(opt) {
+                    let filterOption = document.querySelector('#filterCondition');
+
+                    let tasks = Array.from(document.querySelectorAll('button[data-btnType = "taskStatusBtn"] '));
+                    
+                    if(filterOption.value.toLowerCase() === 'all'){
+                        tasks.forEach((item) => {
+                            item.parentNode.parentNode.classList.remove('hidden')
+                        })
+                    }
+
+                    if(filterOption.value.toLowerCase() === 'incomplete'){
+                        let incomplete = tasks.filter((item) => item.innerHTML.toLowerCase() === 'incomplete');
+                        tasks.forEach((item) => {
+                            item.parentNode.parentNode.classList.add('hidden')
+                        })
+                        incomplete.forEach(element => {
+                            element.parentNode.parentNode.classList.remove('hidden');
+                        })
+                        
+                    }
+
+                    if(filterOption.value.toLowerCase() === 'completed'){
+                        let complete = tasks.filter((item) => item.innerHTML.toLowerCase() === 'completed');
+                        tasks.forEach((item) => {
+                            item.parentNode.parentNode.classList.add('hidden')
+                        })
+                        complete.forEach(element => {
+                            element.parentNode.parentNode.classList.remove('hidden');
+                        })
+                        
+                    }
+
+                }
 
             }
             todo.render();
             window.onload = todo.addToUi();
+            
+            document.querySelector('#searchTask').addEventListener('input', (e) => {
+                let searchText = document.querySelector('#searchTask').value.toLowerCase().trim();
+                todo.searchList(searchText);
+            })
+            
+            document.querySelector('#filterCondition').addEventListener('change', (e) =>{
+              
+                
+                todo.filterTaskList()
+            })
 
             document.querySelector('#task-Form').addEventListener('submit', (e) => {
                 e.preventDefault();
