@@ -15,8 +15,7 @@
         (function () {
             const todo = {
                 storeData: JSON.parse(localStorage.getItem('todos')) || [],
-                // todos: [],
-
+                
                 // Section
                 createSection: {
                     tag: document.createElement('section'),
@@ -212,7 +211,7 @@
                 },
 
                 addToArray: function (value) {
-                    let newTask = { taskId: Date.now(), taskName: value , taskStatus : 'Assigned'}
+                    let newTask = { taskId: Date.now(), taskName: value , taskStatus : 'Incomplete' , bgColor : 'bg-red-500'  }
                     this.storeData.push(newTask);
                     localStorage.setItem('todos', JSON.stringify(this.storeData))
                     this.addToUi();
@@ -229,8 +228,8 @@
                     let tbody = document.querySelector('table tbody');
 
                     this.createTable.createTableBody.innerHTML = ''
-
                     tbody.innerHTML = '';
+
                     array.forEach((task, i) => {
                         let newRow = document.createElement('tr');
                         newRow.setAttribute('class', 'p-2 w-3/4 font-medium')
@@ -246,17 +245,19 @@
                         newRow.appendChild(td1);
 
                         let statusBtn = document.createElement('button');
-                        statusBtn.innerHTML = 'Assigned';
+                        statusBtn.innerHTML = task.taskStatus ? task.taskStatus : 'Incomplete' ;
                         statusBtn.setAttribute('type', 'button');
                         statusBtn.setAttribute('data-btnType', 'taskStatusBtn');
-                        statusBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
+                        statusBtn.setAttribute('class', 'font-medium text-white px-2 py-0.5 rounded-md');
+                        statusBtn.classList.add(task.bgColor);
+                        // console.log(task.bgColor);
 
                         let removeBtn = document.createElement('button');
                         removeBtn.innerHTML = 'Remove';
                         removeBtn.setAttribute('type', 'button');
                         removeBtn.setAttribute('data-btnType', 'taskRemoveBtn');
                         removeBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
-
+                        
                         td2.appendChild(statusBtn);
                         td2.appendChild(removeBtn);
 
@@ -264,28 +265,33 @@
 
                         tbody.appendChild(newRow);
 
-                        let flag = 0;
                         newRow.addEventListener('click', (e) => {
                             if (e.target.getAttribute('data-btnType') === 'taskStatusBtn') {
                                 
-                                if (flag === 0) {
-                                    e.target.style.backgroundColor = 'red';
-                                    e.target.innerHTML = 'incomplete';
-                                    
-                                    e.target.parentNode.parentNode.children[0].style.textDecoration = '';
-                                    flag = 1;
-                                } else {
-                                    e.target.style.backgroundColor = 'green';
-                                    e.target.innerHTML = 'completed';
+                                let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
+                                let changed = this.storeData.filter((item) => item?.taskId === +taskRowId)
+                                let itemAt = this.storeData.indexOf(changed[0]);
+                                
+                                if (this.storeData[itemAt].taskStatus === 'Incomplete') {
+                                    e.target.classList.remove(task.bgColor);
+                                    task.bgColor = 'bg-green-600'
+                                    e.target.classList.add(task.bgColor);
+                                    this.storeData[itemAt].taskStatus = 'Completed';
+                                    e.target.innerHTML = this.storeData[itemAt].taskStatus;
                                     e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
-                                    flag = 0
+                                    localStorage.setItem('todos', JSON.stringify(this.storeData))
+                                    
+                                } else {
+                                    e.target.classList.remove(task.bgColor);
+                                    task.bgColor = 'bg-red-600'
+                                    e.target.classList.add(task.bgColor);
+                                    this.storeData[itemAt].taskStatus = 'Incomplete';
+                                    e.target.innerHTML = this.storeData[itemAt].taskStatus;
+                                    e.target.parentNode.parentNode.children[0].style.textDecoration = '';
+                                    localStorage.setItem('todos', JSON.stringify(this.storeData))
+                                   
                                 }
-
-                                // let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
-                                // this.storeData = this.storeData.filter((item) => item?.taskId === +taskRowId)
-                                // this.storeData[0].taskStatus = 'completed';
-
-
+                              
                             }
                             else if (e.target.getAttribute('data-btnType') === 'taskRemoveBtn') {
                                 let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
@@ -308,37 +314,26 @@
                     }
                 },
                 filterTaskList : function(opt) {
+                    console.log(this.storeData);
                     let filterOption = document.querySelector('#filterCondition');
 
                     let tasks = Array.from(document.querySelectorAll('button[data-btnType = "taskStatusBtn"] '));
-                    
-                    if(filterOption.value.toLowerCase() === 'all'){
-                        tasks.forEach((item) => {
-                            item.parentNode.parentNode.classList.remove('hidden')
-                        })
+                    let data = this.storeData
+                    if(filterOption.value.toLowerCase() == 'all'){
+                        this.addToUi(data)
                     }
 
                     if(filterOption.value.toLowerCase() === 'incomplete'){
-                        let incomplete = tasks.filter((item) => item.innerHTML.toLowerCase() === 'incomplete');
-                        tasks.forEach((item) => {
-                            item.parentNode.parentNode.classList.add('hidden')
-                        })
-                        incomplete.forEach(element => {
-                            element.parentNode.parentNode.classList.remove('hidden');
-                        })
+                        let incomplete = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'incomplete');
+                        this.addToUi(incomplete)
                         
                     }
-
                     if(filterOption.value.toLowerCase() === 'completed'){
-                        let complete = tasks.filter((item) => item.innerHTML.toLowerCase() === 'completed');
-                        tasks.forEach((item) => {
-                            item.parentNode.parentNode.classList.add('hidden')
-                        })
-                        complete.forEach(element => {
-                            element.parentNode.parentNode.classList.remove('hidden');
-                        })
+                        let completed = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'completed');
+                        this.addToUi(completed)
                         
                     }
+                    
 
                 }
 
@@ -352,8 +347,6 @@
             })
             
             document.querySelector('#filterCondition').addEventListener('change', (e) =>{
-              
-                
                 todo.filterTaskList()
             })
 
