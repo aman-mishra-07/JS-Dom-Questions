@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="/dist/output.css">
 </head>
 
-
-
 <body>
     <script>
         (function () {
@@ -167,6 +165,7 @@
                     let taskSearchBox = document.createElement('input')
                     Object.assign(taskSearchBox, searchArrtibutes);
 
+                    //filter box
                     let filterBox = document.createElement('select');
                     filterBox.setAttribute('class', 'p-2 rounded-md border w-1/4 outline-none')
                     filterBox.setAttribute('id', 'filterCondition')
@@ -174,10 +173,8 @@
                     let filterOptions = ['ALL', 'Completed', 'Incomplete'];
                     filterOptions.map((item, i) => {
                         let option = document.createElement('option');
-                        
                         option.value = item
                         option.innerHTML = item;
-                        
                         filterBox.appendChild(option)
                     })
 
@@ -223,6 +220,7 @@
                     localStorage.setItem('todos', JSON.stringify(this.storeData));
                     this.addToUi();
                 },
+
                 addToUi: function (arr) {
                     let array = arr ? arr : this.storeData
                     let tbody = document.querySelector('table tbody');
@@ -246,6 +244,7 @@
 
                         let statusBtn = document.createElement('button');
                         statusBtn.innerHTML = task.taskStatus ? task.taskStatus : 'Incomplete' ;
+                        (statusBtn.innerHTML.toLowerCase() === 'incomplete') ? td1.classList.remove('line-through'): td1.classList.add('line-through');
                         statusBtn.setAttribute('type', 'button');
                         statusBtn.setAttribute('data-btnType', 'taskStatusBtn');
                         statusBtn.setAttribute('class', 'font-medium text-white px-2 py-0.5 rounded-md');
@@ -276,6 +275,7 @@
                                     e.target.classList.remove(task.bgColor);
                                     task.bgColor = 'bg-green-600'
                                     e.target.classList.add(task.bgColor);
+                                    e.target.parentNode.parentNode.children[0].classList.add('line-through')
                                     this.storeData[itemAt].taskStatus = 'Completed';
                                     e.target.innerHTML = this.storeData[itemAt].taskStatus;
                                     e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
@@ -283,15 +283,14 @@
                                     
                                 } else {
                                     e.target.classList.remove(task.bgColor);
+                                    e.target.parentNode.parentNode.children[0].classList.remove('line-through');
                                     task.bgColor = 'bg-red-600'
                                     e.target.classList.add(task.bgColor);
                                     this.storeData[itemAt].taskStatus = 'Incomplete';
                                     e.target.innerHTML = this.storeData[itemAt].taskStatus;
                                     e.target.parentNode.parentNode.children[0].style.textDecoration = '';
-                                    localStorage.setItem('todos', JSON.stringify(this.storeData))
-                                   
-                                }
-                              
+                                    localStorage.setItem('todos', JSON.stringify(this.storeData)) 
+                                } 
                             }
                             else if (e.target.getAttribute('data-btnType') === 'taskRemoveBtn') {
                                 let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
@@ -314,29 +313,21 @@
                     }
                 },
                 filterTaskList : function(opt) {
-                    console.log(this.storeData);
+                    // console.log(this.storeData);
                     let filterOption = document.querySelector('#filterCondition');
-
-                    let tasks = Array.from(document.querySelectorAll('button[data-btnType = "taskStatusBtn"] '));
-                    let data = this.storeData
-                    if(filterOption.value.toLowerCase() == 'all'){
-                        this.addToUi(data)
+                    
+                    if(filterOption.value.toLowerCase() === 'all'){
+                        this.addToUi(this.storeData);
                     }
-
                     if(filterOption.value.toLowerCase() === 'incomplete'){
                         let incomplete = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'incomplete');
-                        this.addToUi(incomplete)
-                        
+                        this.addToUi(incomplete);
                     }
                     if(filterOption.value.toLowerCase() === 'completed'){
                         let completed = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'completed');
-                        this.addToUi(completed)
-                        
+                        this.addToUi(completed);
                     }
-                    
-
                 }
-
             }
             todo.render();
             window.onload = todo.addToUi();
@@ -357,7 +348,6 @@
 
 
         })()
-
 
     </script>
     </section>
