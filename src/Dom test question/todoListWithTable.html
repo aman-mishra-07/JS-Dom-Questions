@@ -13,7 +13,7 @@
         (function () {
             const todo = {
                 storeData: JSON.parse(localStorage.getItem('todos')) || [],
-                
+
                 // Section
                 createSection: {
                     tag: document.createElement('section'),
@@ -135,32 +135,32 @@
                     sectionTag.appendChild(taskInputForm);
 
                     // form child 
-                    let inputBoxContainer = document.createElement('div'); 
+                    let inputBoxContainer = document.createElement('div');
                     inputBoxContainer.setAttribute('class', 'space-x-2');
-                    
-                    
+
+
                     let taskLable = Object.assign(this.formElements.createLabel.tag, this.formElements.createLabel.attr);
                     taskLable.innerHTML = 'Task';
                     inputBoxContainer.appendChild(taskLable);
 
                     let taskInput = Object.assign(this.formElements.createInput.tag, this.formElements.createInput.attr);
                     inputBoxContainer.appendChild(taskInput)
-                    
+
                     let submitBtn = Object.assign(this.formElements.createSubmitBtn.tag, this.formElements.createSubmitBtn.attr);
                     submitBtn.innerHTML = 'Add Task'
                     inputBoxContainer.appendChild(submitBtn);
-                    
+
                     taskInputForm.appendChild(inputBoxContainer);
-                    
+
                     // search and filter
                     let searchBoxContainer = document.createElement('div');
                     searchBoxContainer.setAttribute('class', 'flex item-center justify-between gap-4')
                     let searchArrtibutes = {
-                        type : 'search',
-                        id : 'searchTask',
-                        name : 'searchTask',
-                        placeholder : 'Search Task...',
-                        className : 'px-4 py-2 rounded-md border max-w-4xl outline-none flex-1'
+                        type: 'search',
+                        id: 'searchTask',
+                        name: 'searchTask',
+                        placeholder: 'Search Task...',
+                        className: 'px-4 py-2 rounded-md border max-w-4xl outline-none flex-1'
                     }
                     let taskSearchBox = document.createElement('input')
                     Object.assign(taskSearchBox, searchArrtibutes);
@@ -208,8 +208,8 @@
                 },
 
                 addToArray: function (value) {
-                    let newTask = { taskId: Date.now(), taskName: value , taskStatus : 'Incomplete' , bgColor : 'bg-red-500'  }
-                    this.storeData.push(newTask);
+                    let newTask = { taskId: Date.now(), taskName: value, taskStatus: 'Incomplete', bgColor: 'bg-red-500' }
+                    this.storeData.unshift(newTask);
                     localStorage.setItem('todos', JSON.stringify(this.storeData))
                     this.addToUi();
                     document.querySelector('#taskInputBox').value = '';
@@ -243,8 +243,8 @@
                         newRow.appendChild(td1);
 
                         let statusBtn = document.createElement('button');
-                        statusBtn.innerHTML = task.taskStatus ? task.taskStatus : 'Incomplete' ;
-                        (statusBtn.innerHTML.toLowerCase() === 'incomplete') ? td1.classList.remove('line-through'): td1.classList.add('line-through');
+                        statusBtn.innerHTML = task.taskStatus ? task.taskStatus : 'Incomplete';
+                        (statusBtn.innerHTML.toLowerCase() === 'incomplete') ? td1.classList.remove('line-through') : td1.classList.add('line-through');
                         statusBtn.setAttribute('type', 'button');
                         statusBtn.setAttribute('data-btnType', 'taskStatusBtn');
                         statusBtn.setAttribute('class', 'font-medium text-white px-2 py-0.5 rounded-md');
@@ -256,7 +256,7 @@
                         removeBtn.setAttribute('type', 'button');
                         removeBtn.setAttribute('data-btnType', 'taskRemoveBtn');
                         removeBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
-                        
+
                         td2.appendChild(statusBtn);
                         td2.appendChild(removeBtn);
 
@@ -266,11 +266,11 @@
 
                         newRow.addEventListener('click', (e) => {
                             if (e.target.getAttribute('data-btnType') === 'taskStatusBtn') {
-                                
+
                                 let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
                                 let changed = this.storeData.filter((item) => item?.taskId === +taskRowId)
                                 let itemAt = this.storeData.indexOf(changed[0]);
-                                
+
                                 if (this.storeData[itemAt].taskStatus === 'Incomplete') {
                                     e.target.classList.remove(task.bgColor);
                                     task.bgColor = 'bg-green-600'
@@ -280,7 +280,7 @@
                                     e.target.innerHTML = this.storeData[itemAt].taskStatus;
                                     e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
                                     localStorage.setItem('todos', JSON.stringify(this.storeData))
-                                    
+
                                 } else {
                                     e.target.classList.remove(task.bgColor);
                                     e.target.parentNode.parentNode.children[0].classList.remove('line-through');
@@ -289,8 +289,8 @@
                                     this.storeData[itemAt].taskStatus = 'Incomplete';
                                     e.target.innerHTML = this.storeData[itemAt].taskStatus;
                                     e.target.parentNode.parentNode.children[0].style.textDecoration = '';
-                                    localStorage.setItem('todos', JSON.stringify(this.storeData)) 
-                                } 
+                                    localStorage.setItem('todos', JSON.stringify(this.storeData))
+                                }
                             }
                             else if (e.target.getAttribute('data-btnType') === 'taskRemoveBtn') {
                                 let taskRowId = e.target.parentNode.parentNode.getAttribute('data-taskId');
@@ -302,51 +302,68 @@
                 },
                 addTask: function () {
                     let taskInputBoxValue = document.querySelector('#taskInputBox').value.trim();
+
+                    if (!taskInputBoxValue) {
+                        alert('Enter task')
+                    }
                     if (taskInputBoxValue) {
                         this.addToArray(taskInputBoxValue);
                     }
                 },
-                searchList : function(value) {
-                    let matchedData = this.storeData.filter((obj) => obj?.taskName?.toLowerCase().includes(value))
-                    if(matchedData.length > 0 ){
-                        this.addToUi(matchedData);
-                    }
-                },
-                filterTaskList : function(opt) {
-                    // console.log(this.storeData);
+
+                filterTaskList: function (opt) {
                     let filterOption = document.querySelector('#filterCondition');
-                    
-                    if(filterOption.value.toLowerCase() === 'all'){
-                        this.addToUi(this.storeData);
+                    let searchText = document.querySelector('#searchTask').value.trim();
+                    if (searchText.length > 0) {
+
+                        if (filterOption.value.toLowerCase() === 'all' && searchText.length > 0) {
+                            let allMatched = this.storeData.filter(item => item.taskName.toLowerCase().includes(searchText.toLowerCase()))
+                            this.addToUi(allMatched);
+                        }
+                        if (filterOption.value.toLowerCase() === 'incomplete' && searchText.length > 0) {
+                            let incompleteAll = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'incomplete' && item.taskName.toLowerCase().includes(searchText));
+                            this.addToUi(incompleteAll);
+                        }
+                        if (filterOption.value.toLowerCase() === 'completed' && searchText.length > 0) {
+                            let completeAll = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'completed' && item.taskName.toLowerCase().includes(searchText));
+                            this.addToUi(completeAll);
+                        }
                     }
-                    if(filterOption.value.toLowerCase() === 'incomplete'){
-                        let incomplete = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'incomplete');
-                        this.addToUi(incomplete);
+
+                    if (searchText.length === 0 && (filterOption.value.toLowerCase() === 'all' || filterOption.value.toLowerCase() === 'completed' || filterOption.value.toLowerCase() === 'incomplete')) {
+                        if (filterOption.value.toLowerCase() === 'all') {
+                            this.addToUi(this.storeData);
+                        }
+                        if (filterOption.value.toLowerCase() === 'incomplete') {
+                            let incomplete = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'incomplete');
+                            this.addToUi(incomplete);
+                        }
+                        if (filterOption.value.toLowerCase() === 'completed') {
+                            let completed = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'completed');
+                            this.addToUi(completed);
+                        }
                     }
-                    if(filterOption.value.toLowerCase() === 'completed'){
-                        let completed = this.storeData.filter((item) => item.taskStatus.toLowerCase() === 'completed');
-                        this.addToUi(completed);
-                    }
+
+                },
+                bind: function () {
+                    todo.render();
+                    todo.addToUi();
+                    document.querySelector('#searchTask').addEventListener('input', (e) => {
+                        todo.filterTaskList()
+                    })
+
+                    document.querySelector('#filterCondition').addEventListener('change', (e) => {
+                        todo.filterTaskList()
+                    })
+
+                    document.querySelector('#task-Form').addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        todo.addTask()
+                    })
                 }
+
             }
-            todo.render();
-            window.onload = todo.addToUi();
-            
-            document.querySelector('#searchTask').addEventListener('input', (e) => {
-                let searchText = document.querySelector('#searchTask').value.toLowerCase().trim();
-                todo.searchList(searchText);
-            })
-            
-            document.querySelector('#filterCondition').addEventListener('change', (e) =>{
-                todo.filterTaskList()
-            })
-
-            document.querySelector('#task-Form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                todo.addTask()
-            })
-
-
+            window.onload = todo.bind;
         })()
 
     </script>
