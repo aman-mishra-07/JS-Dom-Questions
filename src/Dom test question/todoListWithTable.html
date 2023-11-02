@@ -13,7 +13,6 @@
         (function () {
             const todo = {
                 storeData: JSON.parse(localStorage.getItem('todos')) || [],
-
                 // Section
                 createSection: {
                     tag: document.createElement('section'),
@@ -54,7 +53,7 @@
                             type: 'text',
                             name: "taskInputBox",
                             id: "taskInputBox",
-                            className: "p-2 rounded-md border",
+                            className: "p-2 rounded-md border outline-none",
                             placeholder: 'Enter Task...'
                         }
                     },
@@ -121,6 +120,7 @@
                     },
 
                 },
+                // Base Structure Render
                 render: function () {
                     // created section
                     let sectionTag = Object.assign(this.createSection.tag, this.createSection.attr);
@@ -154,7 +154,7 @@
 
                     // search and filter
                     let searchBoxContainer = document.createElement('div');
-                    searchBoxContainer.setAttribute('class', 'flex item-center justify-between gap-4')
+                    searchBoxContainer.setAttribute('class', 'flex item-center justify-between w-full max-w-4xl gap-4')
                     let searchArrtibutes = {
                         type: 'search',
                         id: 'searchTask',
@@ -178,9 +178,8 @@
                         filterBox.appendChild(option)
                     })
 
-                    searchBoxContainer.appendChild(taskSearchBox)
-                    searchBoxContainer.appendChild(filterBox)
-                    taskInputForm.appendChild(searchBoxContainer);
+                    searchBoxContainer.append(taskSearchBox, filterBox)
+                    sectionTag.appendChild(searchBoxContainer);
 
 
                     // task table
@@ -195,11 +194,10 @@
 
                     let taskHeading = Object.assign(this.createTable.createTableHead.createRow.createTd1.tag, this.createTable.createTableHead.createRow.createTd1.attr);
                     taskHeading.innerHTML = 'Task';
-                    tableHeadRow.appendChild(taskHeading);
-
+                    
                     let taskAction = Object.assign(this.createTable.createTableHead.createRow.createTd2.tag, this.createTable.createTableHead.createRow.createTd2.attr);
                     taskAction.innerHTML = 'Action';
-                    tableHeadRow.appendChild(taskAction);
+                    tableHeadRow.append(taskHeading, taskAction);
 
                     let tableBody = Object.assign(this.createTable.createTableBody.tag, this.createTable.createTableBody.attr)
 
@@ -255,13 +253,10 @@
                         removeBtn.innerHTML = 'Remove';
                         removeBtn.setAttribute('type', 'button');
                         removeBtn.setAttribute('data-btnType', 'taskRemoveBtn');
-                        removeBtn.setAttribute('class', 'bg-slate-400 font-medium text-white px-2 py-0.5 rounded-md');
+                        removeBtn.setAttribute('class', 'bg-blue-600 font-medium text-white px-2 py-0.5 rounded-md');
 
-                        td2.appendChild(statusBtn);
-                        td2.appendChild(removeBtn);
-
+                        td2.append(statusBtn,removeBtn);
                         newRow.appendChild(td2);
-
                         tbody.appendChild(newRow);
 
                         newRow.addEventListener('click', (e) => {
@@ -298,11 +293,9 @@
                             }
                         })
                     })
-
                 },
                 addTask: function () {
                     let taskInputBoxValue = document.querySelector('#taskInputBox').value.trim();
-
                     if (!taskInputBoxValue) {
                         alert('Enter task')
                     }
@@ -361,7 +354,6 @@
                         todo.addTask()
                     })
                 }
-
             }
             window.onload = todo.bind;
         })()
