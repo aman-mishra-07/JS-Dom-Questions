@@ -226,7 +226,7 @@
                     this.createTable.createTableBody.innerHTML = ''
                     tbody.innerHTML = '';
 
-                    array.forEach((task, i) => {
+                    array.map((task, i) => {
                         let newRow = document.createElement('tr');
                         newRow.setAttribute('class', 'p-2 w-3/4 font-medium')
                         newRow.setAttribute('data-taskId', task.taskId);
