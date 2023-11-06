@@ -17,13 +17,18 @@
 function checkOddEven(num){
     let checkNumber = new Promise((resolve, reject) =>{
         if(num % 2 === 0){
-            resolve('even')
+            setTimeout(() => {  
+                resolve('even')
+            }, 2000)
         }
-        if(num % 1 === 0){
-            resolve('odd')
+        if(num % 2 !== 0){
+            setTimeout(() => {
+                resolve('odd')
+            }, 1000)
         }
         if(isNaN(num)){
             reject('Not a Number')
+            
         }
     })
     return checkNumber.then((res) => {
