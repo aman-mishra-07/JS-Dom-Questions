@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Hi using set interval</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body>
+    <div class="px-20 pt-10 pb-5 space-x-4">
+        <button type="button" data-TimerStart class="bg-slate-50 hover:bg-slate-200 rounded-md border py-2 px-4">Start</button>
+        <button type="button" data-TimerStop class="bg-slate-50 hover:bg-slate-200 rounded-md border py-2 px-4">Stop</button>
+    </div>
+    <div class="px-20" data-Output>
+
+    </div>
+
+
+    <script>
+        document.querySelector('[data-TimerStart]').addEventListener('click',() => {
+            let outputBox = document.querySelector('[data-Output]');
+            let startPrint = setInterval(function(){
+                let para = document.createElement('p')
+                para.innerHTML = 'Hi'
+                outputBox.appendChild(para);
+            }, 500)
+            document.querySelector('[data-TimerStop]').addEventListener('click', () => {
+                clearInterval(startPrint)
+            })   
+        })
+    </script>
+    
+</body>
+</html>
