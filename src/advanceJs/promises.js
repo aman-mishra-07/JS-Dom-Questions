@@ -26,10 +26,9 @@ function checkOddEven(num){
             reject('Not a Number')
         }
     })
-    checkNumber.then((res) => {
+    return checkNumber.then((res) => {
         console.log(res);
-    })
-    checkNumber.catch((rej) => {
+    }).catch((rej) => {
         console.log(rej);
     })
 }
