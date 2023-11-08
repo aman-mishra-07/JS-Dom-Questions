@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context-menu</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body >
+    <ul data-contextMenu class="invisible absolute px-4 py-2 border w-44 space-y-1 rounded-md shadow-lg ">
+        <li>Back</li>
+        <li>Forward</li>
+        <li>Sort by</li>
+        <li>new</li>
+        <li>Redo</li>
+        <li>Copy</li>
+        <li>Undo</li>
+    </ul>
+
+    <script>
+        // function contextMenu(){
+        //     document.querySelector('[data-contextMenu]').classList.remove('hidden')
+        // }   
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault()
+            let contextMenu = document.querySelector('[data-contextMenu]')
+            let context = contextMenu.getBoundingClientRect();
+            // let bottomSpace = innerHeight - e.clientY;
+            // let rightSpace = innerWidth - e.clientX;
+
+            let menuWidth = context.width;
+            let menuHeight = context.height;
+             
+            contextMenu.style.left =  e.clientX + "px";
+            contextMenu.style.top =  e.clientY + "px";
+
+
+
+            if( e.clientX + menuWidth > innerWidth ){
+                contextMenu.style.left =  e.clientX - menuWidth + "px";
+            }
+            
+            if( e.clientY + menuHeight > innerHeight ){
+                contextMenu.style.top =  e.clientY - menuHeight + "px";
+            }
+
+
+            
+ 
+             
+            contextMenu.classList.remove('invisible')
+        })
+        document.addEventListener('click', (e) => {
+            document.querySelector('[data-contextMenu]').classList.add('invisible')  
+        })
+    </script>
+</body>
+</html>

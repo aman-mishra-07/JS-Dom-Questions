@@ -88,19 +88,18 @@
                     tag: document.createElement('button'),
                     attr: {
                         type : 'button',
-                        className: 'fixed bottom-10 rigth-10 w-10 h-10 bg-blue-500 rounded-full',
+                        className: 'fixed bottom-10 rigth-10 w-10 h-10 bg-blue-500 rounded-full hidden',
                         id: 'js-scrollbtn'
                     }
                 },
                 bind : function () {
-                    console.log(this);
+                    let btn = Object.assign(this.scrollBtn.tag , this.scrollBtn.attr)
+                    document.body.appendChild(btn);
+
                     document.addEventListener('scroll', (e) => {
                         if (window.scrollY > window.innerHeight) {
-                            let btn = Object.assign(this.scrollBtn.tag , this.scrollBtn.attr)
-                            document.body.appendChild(btn)
+                                
                         }
-                      
-
                     })
                 }
             }

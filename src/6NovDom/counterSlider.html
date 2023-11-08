@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="p-16 min-h-screen">
+        <div data-slider class="h-4 w-52 rounded-full border bg-slate-50 relative">
+            <div data-sliderThumb class="bg-blue-600 w-2 h-6 absolute left-0 top-1/2 rounded-lg -translate-y-1/2">
+            </div>
+        </div>
+        <div data-rangeValue>1</div>
+    </div>
+    <script>
+        (function () {
+            'use strict'
+            
+            let slider = document.querySelector('[data-slider]');
+            let sliderThumb = document.querySelector('[data-sliderThumb]');
+            sliderThumb.addEventListener('mousedown', function(event){
+                let sliderLeft = Math.round(sliderThumb.getBoundingClientRect().left)
+                let shiftX = event.clientX - sliderLeft;
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+                function onMouseMove(e){
+                    let newPos = e.clientX - shiftX - slider.getBoundingClientRect().left;
+                    let sliderRigthMax = slider.offsetWidth - sliderThumb.offsetWidth;
+                    if(newPos < 0 ){
+                        newPos = 0
+                    }
+                    if(newPos > sliderRigthMax){
+                        newPos = sliderRigthMax
+                    }
+                    sliderThumb.style.left = newPos + 'px';
+                    document.querySelector('[data-rangeValue]').innerHTML = Math.round(newPos / (sliderRigthMax/100)) ;
+                }
+                function onMouseUp(){
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                }
+            })
+            slider.addEventListener('click', function(e) {
+                let newPos = e.clientX  - slider.getBoundingClientRect().left;
+                let sliderRigthMax = slider.offsetWidth - sliderThumb.offsetWidth;
+                if(newPos > sliderRigthMax){
+                    newPos = sliderRigthMax;
+                }
+                sliderThumb.style.left = newPos + 'px';
+                document.querySelector('[data-rangeValue]').innerHTML = Math.round(newPos / (sliderRigthMax/100)) ;
+            })
+        })()
+    </script>
+</body>
+
+</html>

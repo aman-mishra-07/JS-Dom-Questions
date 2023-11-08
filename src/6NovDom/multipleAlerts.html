@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body>
+    <div class="p-10">
+        <button type="button" data-addAlert class="bg-slate-100 p-2 border rounded-md">Alert</button>
+    </div>
+    
+
+    <script>
+        let alertBox = document.createElement('ul');
+        alertBox.setAttribute('class',"absolute bottom-5 right-5 space-y-5")
+        alertBox.setAttribute('data-addAlert','alert')
+        document.body.appendChild(alertBox)
+
+        function addAlert(){
+
+            let alert = document.createElement('li');
+            alert.setAttribute('class', 'border bg-green-400 p-4 w-72 rounded-md relative shadow-md flex items-center gap-4 font-semibold text-white')
+            alert.setAttribute('data-alert','')
+
+            alertBox.appendChild(alert);
+
+            let svgDiv = document.createElement('div');
+            svgDiv.setAttribute('class', 'animate-spin w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center');
+
+            svgDiv.innerHTML = `<svg class=" amimate-spin w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"> <g> <path fill="none" d="M0 0h24v24H0z"></path>
+            <path d="M12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-7-7V3z"></path></g></svg>`;
+            
+
+            let alertMessage = document.createElement('p')
+            alertMessage.innerHTML = 'Uploading';
+
+            let removeBtn = document.createElement('button');
+            removeBtn.innerHTML = 'X'
+            removeBtn.setAttribute('type','button')
+            removeBtn.setAttribute('data-removeBtn','removeBtn')
+            removeBtn.setAttribute('class','absolute -top-1 -right-1 h-5 w-5 rounded-full text-sm bg-black text-white')
+
+            removeBtn.addEventListener('click', (event) =>{
+                    event.target.closest('[data-alert]').remove();
+            })
+            setTimeout(() => {
+                alert.remove()
+            }, 10000)
+
+            alert.append(svgDiv, alertMessage, removeBtn);
+            
+            
+        }
+        document.querySelector('[data-addAlert]').addEventListener('click', addAlert)
+
+      </script>
+
+</body>
+</html>
