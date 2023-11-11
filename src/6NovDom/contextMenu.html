@@ -25,8 +25,6 @@
             e.preventDefault()
             let contextMenu = document.querySelector('[data-contextMenu]')
             let context = contextMenu.getBoundingClientRect();
-            // let bottomSpace = innerHeight - e.clientY;
-            // let rightSpace = innerWidth - e.clientX;
 
             let menuWidth = context.width;
             let menuHeight = context.height;
@@ -34,20 +32,13 @@
             contextMenu.style.left =  e.clientX + "px";
             contextMenu.style.top =  e.clientY + "px";
 
-
-
             if( e.clientX + menuWidth > innerWidth ){
                 contextMenu.style.left =  e.clientX - menuWidth + "px";
             }
             
             if( e.clientY + menuHeight > innerHeight ){
                 contextMenu.style.top =  e.clientY - menuHeight + "px";
-            }
-
-
-            
- 
-             
+            }  
             contextMenu.classList.remove('invisible')
         })
         document.addEventListener('click', (e) => {
