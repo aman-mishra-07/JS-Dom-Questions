@@ -66,7 +66,7 @@
                 allAnswers : document.querySelectorAll('[name = answer]'),   
                 loadQuiz : function(currentQuestion){
                     this.deselectAnswers()
-                    document.querySelector('[data-question]').innerHTML = this.quizData[currentQuestion].question;
+                    document.querySelector('[data-question]').innerHTML = `Q${currentQuestion + 1}.  ${this.quizData[currentQuestion].question}`;
                     document.querySelector('[data-optionA]').innerHTML = this.quizData[currentQuestion].a                  
                     document.querySelector('[data-optionB]').innerHTML = this.quizData[currentQuestion].b                  
                     document.querySelector('[data-optionC]').innerHTML = this.quizData[currentQuestion].c                  

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="w-full min-h-screen bg-slate-100 flex items-center justify-center">
+        <div class="px-8 py-4 border bg-white rounded-lg  space-y-4">
+            <h2 class="text-lg font-semibold text-center">Login Form</h2>
+            <form action="#" method="post" class="flex flex-col gap-2" id="loginForm">
+                <div class="relative">
+                    <label for="userName" class="hidden">Name</label>
+                    <input type="text" name="userName" id="userName"
+                        class="outline-none px-4 py-2 border text-sm rounded-md" placeholder="Name" required>
+                    <p class="hidden text-sm text-red-500 p-1" data-nameError></p>    
+                </div>
+                <div>
+                    <label for="userEmail" class="hidden">Email</label>
+                    <input type="email" name="userEmail" id="userEmail"
+                    class="outline-none px-4 py-2 border text-sm rounded-md" placeholder="email" required>
+                    <p class="hidden text-sm text-red-500 p-1" data-emailError></p>    
+                </div>
+                <div>
+                    <label for="password" class="hidden">password</label>
+                    <input type="password" name="password" id="password"
+                    class="outline-none px-4 py-2 border text-sm rounded-md" placeholder="Enter password" required>
+                    <p class="hidden text-sm text-red-500 p-1" data-passError></p>    
+                </div>
+                <div>
+                    <label for="reEnterPassword" class="hidden">Re-Enter password</label>
+                    <input type="password" name="reEnterPassword" id="reEnterPassword"
+                    class="outline-none px-4 py-2 border text-sm rounded-md" placeholder="Re-enter password"
+                    required>
+                    <p class="hidden text-sm text-red-500 p-1" data-repassError></p>    
+                </div>
+
+                <button type="submit" class="bg-blue-400 text-white font-semibold p-2 rounded-md">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            'use strict'
+
+            const loginValidation = {
+                user: document.querySelector('#userName'),
+                email: document.querySelector('#userEmail'),
+                enteredPass: document.querySelector('#password'),
+                reEnteredPass: document.querySelector('#reEnterPassword'),
+                checkMail : function(mail){
+                    let checkMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    if(checkMail.test(mail)) return true;
+                },
+                checkName :function(name){
+                    let checkName = /^[A-Za-z]+$/;
+                    if (checkName.test(this.user.value.trim())) return true;
+                },
+                matchPass : function(pass1, pass2){
+                    if(pass1 === pass2) return true;
+                },
+                validate: function () {
+                    if(this.checkName(this.user.value.trim())
+                        && this.checkMail(this.email.value)
+                        && this.matchPass(this.enteredPass.value, this.reEnteredPass.value)
+                    ){
+                        alert('sucessfully Logined')
+                    }
+                },
+                bind: function () {
+                    this.user.addEventListener('input', (e) => {
+                        if(this.user.value.trim().length > 20){
+                            document.querySelector('[data-nameError]').classList.remove('hidden')
+                            document.querySelector('[data-nameError]').classList.add('block')
+                            document.querySelector('[data-nameError]').innerHTML = '*only 20 characters allowed'
+                        }
+                        if(this.user.value.trim().length < 20){
+                            document.querySelector('[data-nameError]').classList.remove('block')
+                            document.querySelector('[data-nameError]').classList.add('hidden')
+                            document.querySelector('[data-nameError]').innerHTML = ''
+                        }
+                    })
+                    this.email.addEventListener('input', (e) => {                                   
+                        if(!this.checkMail(this.email.value)){
+                            document.querySelector('[data-emailError]').classList.remove('hidden')
+                            document.querySelector('[data-emailError]').classList.add('block')
+                            document.querySelector('[data-emailError]').innerHTML = '*enter valid email'
+                        }else {
+                            document.querySelector('[data-emailError]').classList.remove('block')
+                            document.querySelector('[data-emailError]').classList.add('hidden')
+                            document.querySelector('[data-emailError]').innerHTML = ''
+                        }
+                    })
+                
+                    this.enteredPass.addEventListener('input', (e) => {                                   
+                        if(this.enteredPass.value.length < 8){
+                            document.querySelector('[data-passError]').classList.remove('hidden')
+                            document.querySelector('[data-passError]').classList.add('block')
+                            document.querySelector('[data-passError]').innerHTML = '*minimum 8 characters'
+                        }else {
+                            document.querySelector('[data-passError]').classList.remove('block')
+                            document.querySelector('[data-passError]').classList.add('hidden')
+                            document.querySelector('[data-passError]').innerHTML = ''
+                        }
+                    })
+                    this.reEnteredPass.addEventListener('input', (e) => {                                   
+                        if(!this.matchPass(this.enteredPass.value, this.reEnteredPass.value)){
+                            document.querySelector('[data-repassError]').classList.remove('hidden')
+                            document.querySelector('[data-repassError]').classList.add('block')
+                            document.querySelector('[data-repassError]').innerHTML = "*password didn't matched"
+                        }else {
+                            document.querySelector('[data-repassError]').classList.remove('block')
+                            document.querySelector('[data-repassError]').classList.add('hidden')
+                            document.querySelector('[data-repassError]').innerHTML = ''
+                        }
+                    })
+
+                    document.querySelector('#loginForm').addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.validate()
+                    })
+                }
+            }
+            loginValidation.bind();
+
+
+        })()
+    </script>
+</body>
+
+</html>
