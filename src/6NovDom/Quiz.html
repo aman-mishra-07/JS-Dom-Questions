@@ -61,6 +61,70 @@
                         d : '4',
                         correct : 'c'
                     },
+                    {
+                        question : 'What is 20 + 10 ?',
+                        a : '30',
+                        b : '10',
+                        c : '20',
+                        d : '40',
+                        correct : 'a'
+                    },
+                    {
+                        question : 'What is 20 / 10 ?',
+                        a : '3',
+                        b : '1',
+                        c : '2',
+                        d : '4',
+                        correct : 'c'
+                    },
+                    {
+                        question : 'What is 20 + 10 ?',
+                        a : '30',
+                        b : '10',
+                        c : '20',
+                        d : '40',
+                        correct : 'a'
+                    },
+                    {
+                        question : 'What is 20 / 10 ?',
+                        a : '3',
+                        b : '1',
+                        c : '2',
+                        d : '4',
+                        correct : 'c'
+                    },
+                    {
+                        question : 'What is 20 + 10 ?',
+                        a : '30',
+                        b : '10',
+                        c : '20',
+                        d : '40',
+                        correct : 'a'
+                    },
+                    {
+                        question : 'What is 20 / 10 ?',
+                        a : '3',
+                        b : '1',
+                        c : '2',
+                        d : '4',
+                        correct : 'c'
+                    },
+                    {
+                        question : 'What is 20 + 10 ?',
+                        a : '30',
+                        b : '10',
+                        c : '20',
+                        d : '40',
+                        correct : 'a'
+                    },
+                    {
+                        question : 'What is 20 / 10 ?',
+                        a : '3',
+                        b : '1',
+                        c : '2',
+                        d : '4',
+                        correct : 'c'
+                    },
                 ],
                 quizContainor : document.querySelector('[data-quizContainor]'),
                 allAnswers : document.querySelectorAll('[name = answer]'),   
@@ -102,8 +166,16 @@
                         if(this.currentQuestion < this.quizData.length){
                             this.loadQuiz(this.currentQuestion)
                         } else {
-                            this.quizContainor.innerHTML = `
-                            <h2>Your Score is ${this.score} / ${this.quizData.length}</h2> `
+
+                            if(this.score >= 6){
+                                this.quizContainor.innerHTML = `
+                                <h2>Your Score is ${this.score} / ${this.quizData.length}. Passed</h2> `
+                            }
+                            else{
+                                this.quizContainor.innerHTML = `
+                                <h2>Your Score is ${this.score} / ${this.quizData.length}. Failed</h2> `
+
+                            }
                         }
                         if(this.currentQuestion === this.quizData.length - 1){
                             e.target.classList.add('text-white')
