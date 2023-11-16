@@ -79,52 +79,52 @@
             let selected = null;
             let selectedObj = [];
             let selectedtaskId = '';
-
             listItems.forEach((item) => {
                 item.addEventListener('dragstart', (e) => {
                     selected = e.target;
                     selectedtaskId = selected.getAttribute('data-taskid');
                     selectedObj = this.todos.filter((task => task.taskId === +selectedtaskId))
-                    
+
                 });
             });
-            console.log(selected);
-            console.log(selectedObj);
-            console.log(selectedtaskId);
-            newTaskContainer.addEventListener('dragover', function (e) {
+
+
+            newTaskContainer.addEventListener('dragover', (e) => {
                 e.preventDefault();
             });
-            newTaskContainer.addEventListener('drop', function (e) {
+            newTaskContainer.addEventListener('drop', (e) => {
                 if (selected !== null) {
                     newTaskContainer.appendChild(selected);
-                    selectedObj[0].taskId = 'assigned'
+                    selectedObj[0].taskStatus = 'assigned'
+                    this.updateLocalStorage()
                     selected = null;
                 }
             });
 
-            pendingTaskContainer.addEventListener('dragover', function (e) {
+            pendingTaskContainer.addEventListener('dragover', (e) => {
                 e.preventDefault();
             });
-            pendingTaskContainer.addEventListener('drop', function (e) {
+            pendingTaskContainer.addEventListener('drop', (e) => {
                 if (selected !== null) {
                     pendingTaskContainer.appendChild(selected);
-                    selectedObj[0].taskId = 'pending'
+                    selectedObj[0].taskStatus = 'pending'
+                    this.updateLocalStorage()
                     selected = null;
                 }
             });
 
-            completedTaskContainer.addEventListener('dragover', function (e) {
+            completedTaskContainer.addEventListener('dragover', (e) => {
                 e.preventDefault();
             });
-            completedTaskContainer.addEventListener('drop', function (e) {
+            completedTaskContainer.addEventListener('drop', (e) => {
                 if (selected !== null) {
                     completedTaskContainer.appendChild(selected);
-                    selectedObj[0].taskId = 'completed'
+                    selectedObj[0].taskStatus = 'completed'
+
+                    this.updateLocalStorage()
                     selected = null;
                 }
             });
-            this.updateLocalStorage()
-            
 
         },
     }
@@ -138,5 +138,5 @@
 
     })
     window.onload = todo.render()
-
+   
 })()
