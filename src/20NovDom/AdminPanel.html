@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="p-10 space-y-4">
+        <header class="flex items-center justify-between">
+            <h1 class="text-2xl font-semibold">Our Team</h1>
+            <button type="button" data-AddNewUser
+                class="flex items-center gap-1 rounded-md bg-blue-600 text-white font-semibold px-4 py-2">
+                <span>Add User</span>
+                <svg class="w-4 h-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                    <path
+                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z">
+                    </path>
+                </svg>
+            </button>
+        </header>
+        <table class="w-full rounded-md overflow-hidden ">
+            <thead>
+                <tr class="border bg-slate-300">
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Age</td>
+                    <td>Gender</td>
+                    <td>Role</td>
+                    <td>Blood Group</td>
+                    <td>Date Of Birth</td>
+                    <td>Current Address</td>
+                    <td>Image</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody data-UsersList class="">
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        (function () {
+            'use strict'
+            const ListDatatoTable = {
+                Users: JSON.parse(localStorage.getItem('users')) || [],
+
+                addUserBtn: document.querySelector('[data-AddNewUser]'),
+
+                userList: document.querySelector('[data-UsersList]'),
+
+                updateLocalStorage: function () {
+                    localStorage.setItem('users', JSON.stringify(this.Users));
+                },
+
+                render: function () {
+                    this.Users.map((element, index) => {
+                        let newRow = this.userList.insertRow()
+                        newRow.setAttribute('class', 'border odd:bg-slate-50')
+                        newRow.setAttribute('data-userId', element.id)
+                        newRow.insertCell(0).innerHTML = element.fname.toUpperCase()
+                        newRow.insertCell(1).innerHTML = element.lname.toUpperCase()
+                        newRow.insertCell(2).innerHTML = element.age
+                        newRow.insertCell(3).innerHTML = element.gender.toUpperCase()
+                        newRow.insertCell(4).innerHTML = element.jobRole.toUpperCase()
+                        newRow.insertCell(5).innerHTML = element.bloodGroup
+                        newRow.insertCell(6).innerHTML = element.dob
+                        newRow.insertCell(7).innerHTML = element.currentAddress
+                        newRow.insertCell(8).innerHTML = `<img src='${element.image}' class='w-12    h-12 object-cover'>`
+                        let editBtn = document.createElement('button');
+
+                        editBtn.type = 'button';
+                        editBtn.setAttribute('class', 'rounded-md bg-blue-600 text-white px-2 py-1')
+                        editBtn.innerText = 'Edit'
+                        newRow.insertCell(9).appendChild(editBtn);
+
+                        editBtn.addEventListener('click', (e) => {
+                            let userID = e.target.closest('tr').getAttribute('data-userId');
+                            
+                            let editUser = this.Users.filter(item => item.id === +element.id)
+                            localStorage.setItem('editUser',JSON.stringify(editUser))
+
+                            this.Users = this.Users.filter(item => item.id !== +element.id)
+                            this.updateLocalStorage()
+                            window.location = '/src/20NovDom/addUserForm.html'
+                        })
+                    })
+
+                    this.addUserBtn.addEventListener('click', (e) => window.location = '/src/20NovDom/addUserForm.html')
+                },
+            }
+            ListDatatoTable.render()
+        })()
+    </script>
+</body>
+
+</html>
+</body>
+
+</html>

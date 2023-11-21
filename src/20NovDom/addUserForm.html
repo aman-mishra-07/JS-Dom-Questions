@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New User</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="relative min-h-screen w-full bg-blue-500 flex items-center justify-center p-10" data-NewUserForm>
+        <div class="w-full max-w-3xl bg-white p-10 rounded-md shadow">
+            <button type="button" class="text-sm font-semibold flex items-center gap-2" data-goToAdminPanel>
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><polygon points="3.828 9 9.899 2.929 8.485 1.515 0 10 .707 10.707 8.485 18.485 9.899 17.071 3.828 11 20 11 20 9 3.828 9"></polygon></svg>
+                <span>Go Back To Admin Panel</span>
+            </button>
+            <form id="addUserForm" method="post" action="" class="space-y-4">
+                <h1 class="font-semibold text-3xl text-center">Register New User</h1>
+                <div class="grid grid-cols-2 gap-4 items-center">
+                    <label for="fname" class="block">First Name</label>
+                    <input type="text" name="fname" id="fname" class="border p-2 rounded-md w-full">
+
+                    <label for="lname" class="block">Last Name</label>
+                    <input type="text" name="lname" id="lname" class="border p-2 rounded-md w-full">
+
+                    <label for="age" class="block">Age</label>
+                    <input type="number" name="age" id="age" class="border p-2 rounded-md w-full hidden-spinner">
+
+                    <fieldset class="col-span-2">
+                        <div class="space-x-2 flex">
+                            <legend class="flex-1">Gender</legend>
+                            <input type="radio" name="gender" id="male" value="male"><label for="male">Male</label>
+                            <input type="radio" name="gender" id="female" value="female"><label
+                                for="female">Female</label>
+                            <input type="radio" name="gender" value="transgender" id="transgender"><label
+                                for="transgender">Transgender</label>
+                            <input type="radio" name="gender" value="others" id="others"><label
+                                for="others">Others</label>
+                        </div>
+                    </fieldset>
+                    <label for="DOB">Date Of Birth</label>
+                    <input type="date" name="dob" id="DOB" class="border p-2 rounded-md w-full">
+
+                    <label for="BloodGroup">Blood Group</label>
+                    <input type="text" name="bloodGroup" id="BloodGroup" class="border p-2 rounded-md w-full"
+                        placeholder="example(A+)">
+
+                    <label for="jobRole">Role</label>
+                    <select name="jobRole" id="jobRole" class="border p-2 rounded-md w-full">
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="employee">Employee</option>
+                        <option value="hr">HR</option>
+                    </select>
+
+                    <label for="image">Photograph</label>
+                    <input type="file" accept="image/png, image/jpeg, image/jpg"
+                        class="border p-2 rounded-md w-full">
+
+                    <div class="col-span-2">
+                        <label for="currentAddress">Current Address</label>
+                        <textarea name="currentAddress" id="currentAddress"
+                            class="border resize-none p-2 rounded-md w-full text-slate-400"></textarea>
+                    </div>
+
+                    <div class="col-span-2">
+                        <label for="permanentAddress">Permanent Address</label>
+                        <textarea name="permanentAddress" id="permanentAddress"
+                            class="border resize-none p-2 rounded-md w-full text-slate-400"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="bg-blue-500 text-white font-semibold p-2 rounded-md col-span-2">Submit</button>
+                </div>
+        </div>
+        </form>
+        <div data-modal class="fixed inset-0 bg-black bg-opacity-20 hidden items-center justify-center">
+            <div class="p-10 w-full max-w-lg bg-green-600 rounded-md space-y-4">
+                <h2 class="font-bold text-2xl text-white flex items-center justify-between">
+                    <span>New User Added SuccessFully </span>
+                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg>
+                </h2>
+
+                <button type="button" data-goToAdminPanel class="w-full bg-white hover:bg-opacity-90 font-semibold rounded-md px-4 py-1">Ok, Go to AdminPanel</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        (function () {
+    'use strict'
+
+    const createUser = {
+        Users: JSON.parse(localStorage.getItem('users')) || [],
+        userform: document.querySelector('#addUserForm'),
+        updateLocalStorage: function () {  
+            localStorage.setItem('users', JSON.stringify(this.Users)); 
+        },
+
+        imageInput : document.querySelector('input[type= "file"]'),
+        imageUrl : '',
+        modal : document.querySelector('[data-modal]'),
+        fname : document.querySelector('input[name = "fname"]'),
+        lname : document.querySelector('input[name = "lname"]'),
+        age : document.querySelector('input[name = "age"]'),
+        dob : document.querySelector('input[name = "dob"]'),
+        jobRole : document.querySelector('input[name = "jobRole"]'),
+        currentAddress : document.querySelector('textarea[name = "currentAddress"]'),
+        permanentAddress : document.querySelector('textarea[name = "permanentAddress"]'),
+        bloodGroup : document.querySelector('input[name = "bloodGroup"]'),
+        gender : document.querySelector('input[name = "gender"]'),
+
+
+        editUser: function(){
+            if(localStorage.getItem('editUser')){
+                let editUserData = JSON.parse(localStorage.getItem('editUser'))
+                this.fname.value = editUserData[0].fname
+                this.lname.value = editUserData[0].lname
+                this.age.value = editUserData[0].age
+                this.gender.checked = editUserData[0].gender
+                this.dob.value = editUserData[0].dob
+                this.bloodGroup.value = editUserData[0].bloodGroup
+                this.currentAddress.innerHTML = editUserData[0].currentAddress
+                this.permanentAddress.innerText = editUserData[0].permanentAddress
+                // this.jobRole.c = editUserData[0].jobRole
+                localStorage.removeItem('editUser')
+            
+            }
+        },
+        render: function () {
+            this.editUser()
+
+
+            this.imageInput.addEventListener('change', (e) => {
+                let selectedfile = new FileReader();
+                selectedfile.readAsDataURL(this.imageInput.files[0])
+
+                selectedfile.addEventListener('load', () => {
+                    this.imageUrl = selectedfile.result
+                })
+            })
+            this.userform.addEventListener('submit', (e) => {
+                e.preventDefault()
+                let user = {}
+                let newUser = new FormData(this.userform);
+                user.id = Date.now();
+                for (const elem of newUser) {
+                    if(this.image !== ""){
+                        user.image = this.imageUrl;
+                    }
+                    if (elem[1].trim !== '') {
+                        user[elem[0]] = elem[1];
+                    }
+                }
+                if(user != {}){
+                    this.Users.push(user)
+                }
+                this.updateLocalStorage();
+                this.modal.classList.remove('hidden')
+                this.modal.classList.add('flex')
+            })
+            document.querySelectorAll('[data-goToAdminPanel]').forEach(item => {
+                item.addEventListener('click', (e) => {
+               
+                window.location = '/src/20NovDom/AdminPanel.html'
+            })
+            })
+        },
+    }
+    createUser.render()
+})()
+    </script>
+</body>
+
+</html>

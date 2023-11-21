@@ -14,9 +14,7 @@
         <div class="relative w-full min-h-screen  overflow-hidden">
             <h1 class="fixed z-50 px-10 py-5 bg-blue-500 text-white w-full font-semibold text-3xl">Tech Quiz</h1>
 
-            <div class="absolute h-full w-full" data-questionContainor>
-
-            </div>
+            <ul class="absolute h-full w-full" data-questionContainor></ul>
             <div class="fixed bottom-1/4 left-1/2 -translate-x-1/2 z-50">
                 <button type="button" class="px-4 py-2 bg-slate-100 border rounded-md shadow-lg"
                     data-previousBtn>Previous </button>
@@ -150,12 +148,12 @@
                             )
                         }
                         output.push(
-                            `<div class="p-5">
+                            `<li class="p-5">
                             <fieldset class='px-10'>
                                 <legend class="font-semibold">${que.question}</legend>
                                 <div class="flex gap-10 items-center">${answers.join('')}</div>       
                             </fieldset>
-                        </div>`
+                        </li>`
                         )
                     })
                     this.quizContainor.innerHTML = output.join('')

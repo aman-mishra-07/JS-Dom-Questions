@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Data</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="p-10">
+
+        <table class="w-full">
+            <thead>
+                <tr class="border">
+                    <td>ID</td>
+                    <td>Name</td>
+                    <td>Username</td>
+                    <td>Email</td>
+                    <td>Phone</td>
+                    <td>Website</td>
+                </tr>
+            </thead>
+            <tbody data-UsersList>
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        (function () {
+            'use strict'
+            const ListDatatoTable = {
+                users: fetch('https://jsonplaceholder.typicode.com/users').then((Response) => Response.json()),
+                userList : document.querySelector('[data-UsersList]'),
+                render: function(){
+                    this.users.then(userArr => {
+                        console.log(userArr);
+                        userArr.map(element => {
+                            let newRow = this.userList.insertRow()
+                            newRow.setAttribute('class', 'border')
+                            newRow.insertCell(0).innerHTML = element.id
+                            newRow.insertCell(1).innerHTML = element.name
+                            newRow.insertCell(2).innerHTML = element.username
+                            newRow.insertCell(3).innerHTML = element.email
+                            newRow.insertCell(4).innerHTML = element.phone
+                            newRow.insertCell(5).innerHTML = element.website
+
+                        });
+                    })
+                },
+            }
+            ListDatatoTable.render()
+        })()
+    </script>
+</body>
+
+</html>
