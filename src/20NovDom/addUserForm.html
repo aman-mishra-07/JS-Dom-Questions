@@ -20,21 +20,24 @@
                 <span>Go Back To Admin Panel</span>
             </button>
             <form id="addUserForm" method="post" action="" class="space-y-4">
-                <h1 class="font-semibold text-3xl text-center">Register New User</h1>
+                <h1 class="font-semibold text-3xl text-center" data-formHeading>Register New User</h1>
                 <div class="grid grid-cols-2 gap-4 items-center">
                     <div>
-                        <label for="fname" class="block">First Name</label>
-                        <input type="text" name="fname" id="fname" class="border p-2 rounded-md w-full">
+                        <label for="firstName" class="block">First Name</label>
+                        <input type="text" name="firstName" id="firstName" class="border p-2 rounded-md w-full">
+                        <p data-fnameError class="text-red-600"></p>
                     </div>
 
                     <div>
-                        <label for="lname" class="block">Last Name</label>
-                        <input type="text" name="lname" id="lname" class="border p-2 rounded-md w-full">
+                        <label for="lastName" class="block">Last Name</label>
+                        <input type="text" name="lastName" id="LastName" class="border p-2 rounded-md w-full">
+                        <p data-lastNameError class="text-red-600"></p>
                     </div>
 
                     <div>
                         <label for="age" class="block">Age</label>
                         <input type="number" name="age" id="age" class="border p-2 rounded-md w-full hidden-spinner">
+                        <p data-ageError class="text-red-600 block"></p>
                     </div>
 
                     <fieldset class="">
@@ -48,17 +51,26 @@
                             <input type="radio" name="gender" value="others" id="others"><label
                                 for="others">Others</label>
                         </div>
+                        <p data-genderError class="text-red-600"></p>
                     </fieldset>
 
                     <div>
                         <label for="DOB">Date Of Birth</label>
                         <input type="date" name="dob" id="DOB" class="border p-2 rounded-md w-full">
+                        <p data-dobError class="text-red-600"></p>
+                    </div>
+
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="border p-2 rounded-md w-full">
+                        <p data-emailError class="text-red-600"></p>
                     </div>
 
                     <div>
                         <label for="BloodGroup">Blood Group</label>
                         <input type="text" name="bloodGroup" id="BloodGroup" class="border p-2 rounded-md w-full"
                             placeholder="example(A+)">
+                        <p data-bloodGroupError class="text-red-600"></p>
                     </div>
 
                     <div>
@@ -69,18 +81,25 @@
                             <option value="employee">Employee</option>
                             <option value="hr">HR</option>
                         </select>
+                        <p data-jobRoleError class="text-red-600"></p>
                     </div>
 
-                    <div>
+                    <div class="flex gap-2 items-center col-span-2">
+                        <div class="h-14 aspect-square border shrink-0 rounded-full overflow-hidden">
+                            <img src="https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
+                                alt="user" class="w-full h-full object-cover" data-imageBox>
+                        </div>
                         <label for="image">Photograph</label>
-                        <input type="file" accept="image/png, image/jpeg, image/jpg"
+                        <input type="file" name="image" accept="image/png, image/jpeg, image/jpg"
                             class="border p-2 rounded-md w-full">
+                        <p data-photographError class="text-red-600"> </p>
                     </div>
 
                     <div class="col-span-2">
                         <label for="currentAddress">Current Address</label>
                         <textarea name="currentAddress" id="currentAddress"
-                            class="border resize-none p-2 rounded-md w-full text-slate-400"></textarea>
+                            class="border resize-none p-2 rounded-md w-full "></textarea>
+                        <p data-currentAddressError class="text-red-600"></p>
                         <div class="space-x-2">
                             <input type="checkbox" id="sameAddress"><label>Same Permanent address as Current
                                 Address</label>
@@ -90,7 +109,8 @@
                     <div class="col-span-2">
                         <label for="permanentAddress">Permanent Address</label>
                         <textarea name="permanentAddress" id="permanentAddress"
-                            class="border resize-none p-2 rounded-md w-full text-slate-400"></textarea>
+                            class="border resize-none p-2 rounded-md w-full"></textarea>
+                        <p data-permanentAddressError class="text-red-600"></p>
                     </div>
 
                     <button type="submit"
@@ -102,8 +122,7 @@
             <div class="p-10 w-full max-w-lg bg-green-600 rounded-md space-y-4">
                 <h2 class="font-bold text-2xl text-white flex items-center justify-between">
                     <span>New User Added SuccessFully </span>
-                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path
                             d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z">
                         </path>
@@ -122,8 +141,9 @@
             'use strict'
 
             const createUser = {
-                Users: JSON.parse(localStorage.getItem('users')) || [],
+                Users: localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [],
                 userform: document.querySelector('#addUserForm'),
+
                 updateLocalStorage: function () {
                     localStorage.setItem('users', JSON.stringify(this.Users));
                 },
@@ -131,43 +151,126 @@
                 imageInput: document.querySelector('input[type= "file"]'),
                 imageUrl: '',
                 modal: document.querySelector('[data-modal]'),
-                fname: document.querySelector('input[name = "fname"]'),
-                lname: document.querySelector('input[name = "lname"]'),
-                age: document.querySelector('input[name = "age"]'),
+                firstName: document.querySelector('input[name="firstName"]'),
+                lastName: document.querySelector('input[name="lastName"]'),
+                age: document.querySelector('input[name="age"]'),
                 dob: document.querySelector('input[name = "dob"]'),
-                jobRole: document.querySelector('input[name = "jobRole"]'),
+                jobRole: document.querySelector('select[name = "jobRole"]'),
+                email: document.querySelector('input[name="email"]'),
                 currentAddress: document.querySelector('textarea[name = "currentAddress"]'),
                 permanentAddress: document.querySelector('textarea[name = "permanentAddress"]'),
                 bloodGroup: document.querySelector('input[name = "bloodGroup"]'),
                 gender: document.querySelector('input[name = "gender"]'),
                 sameAddress: document.querySelector('#sameAddress'),
+                imageBox: document.querySelector('[data-imageBox]'),
+                formHeading: document.querySelector('[data-formHeading]'),
 
+                errorBox: {
+                    fnameError: document.querySelector('[data-fnameError]'),
+                    lastNameError: document.querySelector('[data-lastNameError]'),
+                    ageError: document.querySelector('[data-ageError]'),
+                    genderError: document.querySelector('[data-genderError]'),
+                    dobError: document.querySelector('[data-dobError]'),
+                    bloodGroupError: document.querySelector('[data-bloodGroupError]'),
+                    emailError: document.querySelector('[data-emailError]'),
+                    jobRoleError: document.querySelector('[data-jobRoleError]'),
+                    photographError: document.querySelector('[data-photographError]'),
+                    currentAddressError: document.querySelector('[data-currentAddressError]'),
+                    permanentAddressError: document.querySelector('[data-permanentAddressError]'),
+                },
+                setError: function (elemId, err) {
+                    elemId.innerHTML = err;
+                },
 
+                changeUser: [],
                 editUser: function () {
                     if (localStorage.getItem('editUser')) {
-                        let editUserData = JSON.parse(localStorage.getItem('editUser'))
-                        this.fname.value = editUserData[0].fname
-                        this.lname.value = editUserData[0].lname
-                        this.age.value = editUserData[0].age
-                        this.gender.checked = editUserData[0].gender
-                        this.dob.value = editUserData[0].dob
-                        this.bloodGroup.value = editUserData[0].bloodGroup
-                        this.currentAddress.innerText = editUserData[0].currentAddress
-                        this.permanentAddress.innerText = editUserData[0].permanentAddress
-                        // this.jobRole.value.c = editUserData[0].jobRole
-                        localStorage.removeItem('editUser')
+                        this.formHeading.innerHTML = 'Edit Profile'
+                        let editUserId = JSON.parse(localStorage.getItem('editUser'))
+                        let editUserData = this.Users.filter((item) => item.id === +editUserId[0]?.id)
+                        let itemIndex = this.Users.indexOf(editUserData[0])
 
+                        this.changeUser = this.Users[itemIndex];
+
+                        this.firstName.value = this.Users[itemIndex]?.firstName
+                        this.lastName.value = this.Users[itemIndex]?.lastName
+                        this.age.value = this.Users[itemIndex]?.age
+                        this.email.value = this.Users[itemIndex]?.email
+                        this.gender.checked = this.Users[itemIndex]?.gender
+                        this.dob.value = this.Users[itemIndex]?.dob
+                        this.bloodGroup.value = this.Users[itemIndex]?.bloodGroup
+                        this.jobRole.value = this.Users[itemIndex]?.jobRole
+                        this.currentAddress.innerText = this.Users[itemIndex]?.currentAddress
+                        this.permanentAddress.innerText = this.Users[itemIndex]?.permanentAddress
+                        this.imageBox.src = this.Users[itemIndex]?.image ? this.Users[itemIndex]?.image : `https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png`
+                        localStorage.removeItem('editUser');
                     }
+                    return
                 },
-                render: function () {
-                    this.editUser();
+                validate: {
+                    checkName: function (name) {
+                        return (/^[A-Za-z]+$/.test(name.trim())) ? true : false;
+                    },
+                    checkEmail: function (mail) {
+                        return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) ? true : false;
+                    },
+                    checkBloodGroup: function (bloodGroup) {
+                        return (/^(A|B|AB|O)[+-]$/.test(bloodGroup)) ? true : false;
+                    },
+                    checkDate: function (date) {
+                        return date.match('0000-00-00') ? true : false
+                    },
+                    checkAge: function (age) {
+                        return (age > 0) ? true : false;
+                    }
 
-                    this.fname.addEventListener('input', (e) => {
-                        let checkName = /^[A-Za-z]+$/;
-                        if (checkName.test(this.fname.value.trim())) {
+                },
+
+
+                bind: function () {
+
+                    this.firstName.addEventListener('input', (e) => {
+                        if (!this.validate.checkName(this.firstName.value.trim())) {
+                            this.setError(this.errorBox.fnameError, 'number and special char Not allowed')
                             return
                         }
-                        e.target.style.outline = 'red'
+                        this.setError(this.errorBox.fnameError, '')
+                    })
+                    this.lastName.addEventListener('input', (e) => {
+                        if (!this.validate.checkName(this.lastName.value.trim())) {
+                            this.setError(this.errorBox.lastNameError, 'number and special char Not allowed')
+                            return;
+                        }
+                        this.setError(this.errorBox.lastNameError, '')
+                    })
+                    this.bloodGroup.addEventListener('input', (e) => {
+                        if (!this.validate.checkBloodGroup(this.bloodGroup.value)) {
+                            this.setError(this.errorBox.bloodGroupError, 'Enter valid blood group')
+                            return
+                        }
+                        this.setError(this.errorBox.bloodGroupError, '')
+                    })
+                    this.dob.addEventListener('input', e => {
+
+                        if (!this.validate.checkDate(this.dob.value)) {
+                            this.setError(this.errorBox.dobError, 'enter correct date')
+                        }
+                        this.setError(this.errorBox.dobError, '')
+                    })
+                    this.email.addEventListener('input', (e) => {
+                        if (!this.validate.checkEmail(this.email.value.trim())) {
+                            this.setError(this.errorBox.emailError, 'enter correct email')
+                            return;
+                        }
+                        this.setError(this.errorBox.emailError, '')
+                    })
+                    this.age.addEventListener('input', (e) => {
+                        if (!this.validate.checkAge(this.age.value.trim())) {
+                            this.setError(this.errorBox.ageError, 'invalid Age')
+                            return;
+                        }
+                        this.setError(this.errorBox.ageError, '')
+
                     })
 
                     this.sameAddress.addEventListener('change', (e) => {
@@ -177,46 +280,90 @@
                         }
                         this.permanentAddress.innerHTML = '';
                     })
-
                     this.imageInput.addEventListener('change', (e) => {
                         let selectedfile = new FileReader();
                         selectedfile.readAsDataURL(this.imageInput.files[0])
 
                         selectedfile.addEventListener('load', () => {
                             this.imageUrl = selectedfile.result
+                            this.imageBox.src = selectedfile.result
                         })
                     })
-                    this.userform.addEventListener('submit', (e) => {
-                        e.preventDefault()
-                        let user = {}
-                        let newUser = new FormData(this.userform);
-                        user.id = Date.now();
-                        for (const elem of newUser) {
-                            if (this.image !== "") {
-                                user.image = this.imageUrl;
-                            }
-                            if (elem[1].trim !== '') {
-                                user[elem[0]] = elem[1];
-                            }
-                        }
-                        if (user != {} && user.image !== '') {
-                            this.Users.push(user)
-                            this.updateLocalStorage();
-                            this.modal.classList.remove('hidden')
-                            this.modal.classList.add('flex')
-                            return;
-                        }
-                        alert('Please fill all fields')
 
-                    })
                     document.querySelectorAll('[data-goToAdminPanel]').forEach(item => {
                         item.addEventListener('click', (e) => {
                             window.location = '/src/20NovDom/AdminPanel.html'
                         })
                     })
+
+                    this.userform.addEventListener('submit', (e) => {
+                        e.preventDefault()
+
+                        if (this.changeUser == '') {
+                            let newUser = new FormData(this.userform)
+                            let user = {};
+                            user.id = Date.now()
+                            newUser.forEach((value, key) => {
+                                if ((key === 'firstName' && this.validate.checkName(this.firstName.value.trim()))
+                                    || (key === 'lastName' && this.validate.checkName(this.lastName.value.trim()))
+                                    || (key === 'age' && this.validate.checkAge(this.age.value.trim()))
+                                    || (key === 'email' && this.validate.checkEmail(this.email.value.trim()))
+                                    || (key === 'dob' && this.dob.value != '')
+                                    || (key == 'gender')
+                                    || (key == 'bloodGroup' && this.validate.checkBloodGroup(this.bloodGroup.value.trim()))
+                                    || (key == 'jobRole' && this.jobRole.value != '')
+                                    || (key == 'currentAddress' && this.currentAddress.value != '')
+                                    || (key == 'permanentAddress' && this.permanentAddress.value != '')
+                                ) {
+                                    user[key] = value;
+                                }
+                                if (key == 'image' && this.imageUrl != '') {
+                                    user[key] = this.imageUrl
+                                }
+                            })
+                            if (user != {}) {
+                                this.Users.push(user);
+                                console.log(user);
+                                this.modal.classList.remove('hidden')
+                                this.modal.classList.add('flex')
+                                this.updateLocalStorage();
+
+                            } else {
+                                alert('Please fill all fields')
+                            }
+
+                        } else {
+                            let itemAt = this.Users.indexOf(this.changeUser);
+                            if (itemAt !== -1) {
+                                this.Users[itemAt].firstName = this.firstName.value;
+                                this.Users[itemAt].lastName = this.lastName.value;
+                                this.Users[itemAt].age = this.age.value;
+                                this.Users[itemAt].gender = this.gender.value;
+                                this.Users[itemAt].dob = this.dob.value;
+                                this.Users[itemAt].email = this.email.value;
+                                this.Users[itemAt].bloodGroup = this.bloodGroup.value;
+                                this.Users[itemAt].jobRole = this.jobRole.value;
+                                this.Users[itemAt].currentAddress = this.currentAddress.value;
+                                this.Users[itemAt].permanentAddress = this.permanentAddress.value;
+                                if (this.imageUrl !== '') {
+                                    this.Users[itemAt].image = this.imageUrl;
+                                }
+                                this.modal.classList.remove('hidden')
+                                this.modal.classList.add('flex')
+                                this.updateLocalStorage();
+                                this.userform.reset();
+                            }
+                        }  
+                    })
                 },
+
+                render: function () {
+                    this.editUser();
+                    this.bind();
+                }
             }
             createUser.render()
+            // window.onload = createUser.render()
         })()
     </script>
 </body>

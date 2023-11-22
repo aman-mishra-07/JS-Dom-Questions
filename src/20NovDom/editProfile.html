@@ -1,0 +1,258 @@
+
+<div class="fixed top-0 min-h-screen w-full bg-blue-500 hidden items-center justify-center p-10"
+data-editProfileForm>
+<div class="w-full max-w-6xl bg-white p-10 rounded-md shadow">
+    <button type="button" class="text-sm font-semibold flex items-center gap-2" data-goToAdminPanel>
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <polygon
+                points="3.828 9 9.899 2.929 8.485 1.515 0 10 .707 10.707 8.485 18.485 9.899 17.071 3.828 11 20 11 20 9 3.828 9">
+            </polygon>
+        </svg>
+    </button>
+    <form id="editUserForm" method="post" class="space-y-4">
+        <h1 class="font-semibold text-3xl text-center">Edit Profile</h1>
+        <div class="grid grid-cols-6 gap-x-6 gap-y-2 items-center">
+            <div class="col-span-2 flex items-center gap-2">
+                <div class="w-24 h-24 rounded-full overflow-hidden shrink-0">
+                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                        alt="user" class="h-full w-full object-cover" data-userImage>
+                </div>
+                <div>
+                    <label for="image">Change Profile</label>
+                    <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" class=''>
+                </div>
+            </div>
+            <div class="col-span-2">
+                <label for="firstName" class="block">First Name</label>
+                <input type="text" name="firstName" id="firstName" class="border p-2 rounded-md w-full">
+                <p data-fnameError class="text-red-600"></p>
+            </div>
+
+            <div class="col-span-2">
+                <label for="lastName" class="block">Last Name</label>
+                <input type="text" name="lastName" id="LastName" class="border p-2 rounded-md w-full">
+                <p data-lastNameError class="text-red-600"></p>
+            </div>
+
+            <div class="col-span-2">
+                <label for="age" class="block">Age</label>
+                <input type="number" name="age" id="age" class="border p-2 rounded-md w-full hidden-spinner">
+                <p data-ageError class="text-red-600 block"></p>
+            </div>
+
+            <fieldset class="col-span-2">
+                <legend class="">Gender</legend>
+                <div class="space-x-2 flex">
+                    <input type="radio" name="gender" id="male" value="male"><label for="male">Male</label>
+                    <input type="radio" name="gender" id="female" value="female"><label
+                        for="female">Female</label>
+                    <input type="radio" name="gender" value="transgender" id="transgender"><label
+                        for="transgender">Transgender</label>
+                </div>
+                <p data-genderError class="text-red-600"></p>
+            </fieldset>
+
+            <div class="col-span-2">
+                <label for="DOB">Date Of Birth</label>
+                <input type="date" name="dob" id="DOB" class="border p-2 rounded-md w-full">
+                <p data-dobError class="text-red-600"></p>
+            </div>
+
+            <div class="col-span-2">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="border p-2 rounded-md w-full">
+                <p data-emailError class="text-red-600"></p>
+            </div>
+
+            <div class="col-span-2">
+                <label for="BloodGroup">Blood Group</label>
+                <input type="text" name="bloodGroup" id="BloodGroup" class="border p-2 rounded-md w-full"
+                    placeholder="example(A+)">
+                <p data-bloodGroupError class="text-red-600"></p>
+            </div>
+
+            <div class="col-span-2">
+                <label for="jobRole">Role</label>
+                <select name="jobRole" id="jobRole" class="border p-2 rounded-md w-full">
+                    <option value="">Select Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="employee">Employee</option>
+                    <option value="hr">HR</option>
+                </select>
+                <p data-jobRoleError class="text-red-600"></p>
+            </div>
+
+            <div class="col-span-3">
+                <label for="currentAddress">Current Address</label>
+                <textarea name="currentAddress" id="currentAddress"
+                    class="border resize-none p-2 rounded-md w-full text-slate-400"></textarea>
+                <p data-currentAddressError class="text-red-600"></p>
+            </div>
+
+            <div class="col-span-3">
+                <label for="permanentAddress">Permanent Address</label>
+                <textarea name="permanentAddress" id="permanentAddress"
+                    class="border resize-none p-2 rounded-md w-full text-slate-400"></textarea>
+                <p data-permanentAddressError class="text-red-600"></p>
+            </div>
+            <div class="col-span-3 space-x-2">
+                <input type="checkbox" id="sameAddress"><label>Same Permanent address as Current
+                    Address</label>
+            </div>
+
+            <button type="submit" class="bg-blue-500 text-white font-semibold p-2 rounded-md col-span-3">Update
+                Profile</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    (function () {
+        'use strict'
+
+        const ListDatatoTable = {
+            Users: JSON.parse(localStorage.getItem('users')) || [],
+
+            timer: null,
+            useDebounce: function (res) {
+                clearTimeout(this.timer)
+                this.timer = setTimeout(() => {
+                    let searchResult = this.Users.filter(item => item.firstName.toLowerCase().includes(res.toLowerCase()))
+                    this.render(searchResult)
+                }, 1000);
+
+            },
+
+            addUserBtn: document.querySelector('[data-AddNewUser]'),
+
+            userList: document.querySelector('[data-UsersList]'),
+
+            editProfileModal: document.querySelector('[data-editProfileForm]'),
+
+            editUserForm: document.querySelector('#editUserForm'),
+
+            profileFields: {
+                firstName: document.querySelector('input[name="firstName"]'),
+                lastName: document.querySelector('input[name="lastName"]'),
+                age: document.querySelector('input[name="age"]'),
+                dob: document.querySelector('input[name = "dob"]'),
+                jobRole: document.querySelector('select[name = "jobRole"]'),
+                email: document.querySelector('input[name="email"]'),
+                currentAddress: document.querySelector('textarea[name = "currentAddress"]'),
+                permanentAddress: document.querySelector('textarea[name = "permanentAddress"]'),
+                bloodGroup: document.querySelector('input[name = "bloodGroup"]'),
+                gender: document.querySelector('input[name = "gender"]'),
+                sameAddress: document.querySelector('#sameAddress'),
+                userImage: document.querySelector('[data-userImage]')
+            },
+
+            searchBox: document.querySelector('[type="search"]'),
+
+            updateLocalStorage: function () {
+                localStorage.setItem('users', JSON.stringify(this.Users));
+            },
+            editUserData: '',
+            itemIndex: '',
+            editUser: function (userID) {
+                if (userID) {
+                    this.editUserData = this.Users.filter((item) => item.id === +userID)
+                    this.itemIndex = this.Users.indexOf(this.editUserData[0])
+                }
+                console.log(this.Users[this.itemIndex]);
+                if (this.itemIndex) {
+                    this.profileFields.firstName.value = this.Users[this.itemIndex].firstName
+                    this.profileFields.lastName.value = this.Users[this.itemIndex].lastName
+                    this.profileFields.age.value = this.Users[this.itemIndex].age
+                    this.profileFields.email.value = this.Users[this.itemIndex].email
+                    this.profileFields.gender.checked = this.Users[this.itemIndex].gender
+                    this.profileFields.dob.value = this.Users[this.itemIndex].dob
+                    this.profileFields.bloodGroup.value = this.Users[this.itemIndex].bloodGroup
+                    this.profileFields.jobRole.value = this.Users[this.itemIndex].jobRole
+                    this.profileFields.currentAddress.innerText = this.Users[this.itemIndex].currentAddress
+                    this.profileFields.permanentAddress.innerText = this.Users[this.itemIndex].permanentAddress
+                    this.profileFields.userImage.src = this.Users[this.itemIndex].image
+
+                    // } else {
+                    this.Users[this.itemIndex].firstName = this.profileFields.firstName.value.trim()
+                    this.updateLocalStorage()
+                    console.log(this.Users[this.itemIndex].firstName);
+                    this.Users[this.itemIndex].lastName = this.profileFields.lastName.value
+                    this.Users[this.itemIndex].age = this.profileFields.age.value
+                    this.Users[this.itemIndex].email = this.profileFields.email.value
+                    this.Users[this.itemIndex].gender = this.profileFields.gender.checked
+                    this.Users[this.itemIndex].dob = this.profileFields.dob.value
+                    this.Users[this.itemIndex].bloodGroup = this.profileFields.bloodGroup.value
+                    this.Users[this.itemIndex].jobRole = this.profileFields.jobRole.value
+                    this.Users[this.itemIndex].currentAddress = this.profileFields.currentAddress.value
+                    this.Users[this.itemIndex].permanentAddress = this.profileFields.permanentAddress.value
+                    this.Users[this.itemIndex].image = this.imageUrl
+                    console.log(this.Users[this.itemIndex]);
+                }
+
+            },
+            imageInput: document.querySelector('[type="file"]'),
+            imageUrl: '',
+
+            bind: function () {
+
+                this.imageInput.addEventListener('change', (e) => {
+                    let selectedfile = new FileReader();
+                    selectedfile.readAsDataURL(this.imageInput.files[0])
+
+                    selectedfile.addEventListener('load', () => {
+                        this.imageUrl = selectedfile.result
+                    })
+                })
+
+                this.addUserBtn.addEventListener('click', (e) => window.location = '/src/20NovDom/addUserForm.html')
+
+                this.searchBox.addEventListener('input', (e) => {
+                    this.useDebounce(this.searchBox.value.trim())
+                })
+
+                this.editUserForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.editUser()
+                    location.reload()
+                })
+            },
+
+            render: function (userArray) {
+                let array = userArray ? userArray : this.Users;
+                this.userList.innerHTML = "";
+                array.forEach((element, index) => {
+                    let newRow = this.userList.insertRow()
+                    newRow.setAttribute('class', 'border odd:bg-slate-50')
+                    newRow.setAttribute('data-userId', element?.id)
+                    newRow.insertCell(0).innerHTML = element?.firstName.toUpperCase()
+                    newRow.insertCell(1).innerHTML = element?.lastName.toUpperCase()
+                    newRow.insertCell(2).innerHTML = element?.age
+                    newRow.insertCell(3).innerHTML = element?.gender.toUpperCase()
+                    newRow.insertCell(4).innerHTML = element?.jobRole.toUpperCase()
+                    newRow.insertCell(5).innerHTML = element?.bloodGroup
+                    newRow.insertCell(6).innerHTML = element?.dob
+                    newRow.insertCell(7).innerHTML = element?.currentAddress
+                    newRow.insertCell(8).innerHTML = `<img src='${element?.image}' class='w-12 h-12 object-cover'>`
+                    let editBtn = document.createElement('button');
+
+                    editBtn.type = 'button';
+                    editBtn.setAttribute('class', 'rounded-md bg-blue-600 text-white px-2 py-1')
+                    editBtn.innerText = 'Edit'
+                    newRow.insertCell(9).appendChild(editBtn);
+
+                    editBtn.addEventListener('click', (e) => {
+                        let userID = e.target.closest('tr').getAttribute('data-userId');
+                        this.editProfileModal.classList.remove('hidden')
+                        this.editProfileModal.classList.add('flex')
+                        this.editUser(userID)
+                    })
+                })
+                this.bind()
+            },
+        }
+        ListDatatoTable.render()
+        window.onload = ListDatatoTable.render()
+    })()
+</script>
+</body>

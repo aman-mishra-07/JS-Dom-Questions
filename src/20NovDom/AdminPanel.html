@@ -9,92 +9,187 @@
 </head>
 
 <body>
-    <div class="p-10 space-y-4">
-        <header class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold">Our Team</h1>
-            <button type="button" data-AddNewUser
-                class="flex items-center gap-1 rounded-md bg-blue-600 text-white font-semibold px-4 py-2">
-                <span>Add User</span>
-                <svg class="w-4 h-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
-                    <path
-                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z">
-                    </path>
-                </svg>
-            </button>
-        </header>
-        <table class="w-full rounded-md overflow-hidden ">
-            <thead>
-                <tr class="border bg-slate-300">
-                    <td>First Name</td>
-                    <td>Last Name</td>
-                    <td>Age</td>
-                    <td>Gender</td>
-                    <td>Role</td>
-                    <td>Blood Group</td>
-                    <td>Date Of Birth</td>
-                    <td>Current Address</td>
-                    <td>Image</td>
-                    <td>Action</td>
-                </tr>
-            </thead>
-            <tbody data-UsersList class="">
+    <aside
+        class="hidden md:flex flex-col justify-between w-60 absolute inset-y-0 bg-blue-500 text-blue-200 divide-y divide-blue-300 px-4">
+        <a href="#"><img src="https://marineinsurer.co.uk/wp-content/uploads/2020/05/logo-dummy.png" alt=""
+                class="h-16"></a>
 
-            </tbody>
-        </table>
-    </div>
+        <nav class=" flex-grow p-2 flex flex-col gap-4">
+            <ul class="overflow-auto">
+                <li class="">
+                    <a href="#" class="flex items-center gap-2 hover:text-white font-bold">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd"></path>
+                          </svg>
+                        <span>Users</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <button class="flex items-center gap-2 py-4" type="button">
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <g>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M12.172 12L9.343 9.172l1.414-1.415L15 12l-4.243 4.243-1.414-1.415z"></path>
+                </g>
+            </svg>
+            logout
+        </button>
+
+    </aside>
+
+    <!-- main content -->
+    <main class="pl-60 space-y-4">
+        <header class="">
+            <div class="px-4 py-2 flex items-center justify-between shadow">
+                <h2>Welcome, Admin</h2>
+                <div class="w-10 aspect-square rounded-full border"></div>
+            </div>
+
+            <div class="px-6 py-3 space-y-2">
+                <h1 class="text-2xl font-semibold">Our Team</h1>
+               <div class="flex justify-between">
+                <input type="search" class="border p-2 rounded-md w-full max-w-sm outline-none" placeholder="search">
+                <button type="button" data-AddNewUser
+                    class="flex items-center gap-1 rounded-md bg-blue-600 text-white font-semibold px-4 py-2">
+                    <span>Add User</span>
+                    <svg class="w-4 h-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path
+                            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z">
+                        </path>
+                    </svg>
+                </button>
+               </div>
+            </div>
+        </header>
+        <section class="px-6">
+            <table class="w-full rounded-md overflow-hidden ">
+                <thead>
+                    <tr class="border bg-blue-500 text-white font-semibold">
+                        <td class="p-2">First Name</td>
+                        <td class="py-2">Last Name</td>
+                        <td class="py-2">Age</td>
+                        <td class="py-2">Gender</td>
+                        <td class="py-2">Role</td>
+                        <td class="py-2">Blood Group</td>
+                        <td class="py-2">Date Of Birth</td>
+                        <td class="py-2">Current Address</td>
+                        <td class="py-2">Image</td>
+                        <td class="py-2">Action</td>
+                    </tr>
+                </thead>
+                <tbody data-UsersList class="">
+    
+                </tbody>
+            </table>
+        </section>
+    </main>
 
     <script>
         (function () {
             'use strict'
+
             const ListDatatoTable = {
                 Users: JSON.parse(localStorage.getItem('users')) || [],
+
+                timer: null,
+                useDebounce: function (res) {
+                    clearTimeout(this.timer)
+                    this.timer = setTimeout(() => {
+                        let searchResult = this.Users.filter(item => item.firstName.toLowerCase().includes(res.toLowerCase()))
+                        this.render(searchResult)
+                    }, 1000);
+                },
 
                 addUserBtn: document.querySelector('[data-AddNewUser]'),
 
                 userList: document.querySelector('[data-UsersList]'),
 
+                searchBox: document.querySelector('[type="search"]'),
+
                 updateLocalStorage: function () {
                     localStorage.setItem('users', JSON.stringify(this.Users));
                 },
+                removeUser: function (userId) {
+                    this.Users = this.Users.filter(item => item.id !== +userId)
+                    this.updateLocalStorage()
+                    this.render()
+                },
 
-                render: function () {
-                    this.Users.map((element, index) => {
+                bind: function () {
+                    this.addUserBtn.addEventListener('click', (e) => window.location = '/src/20NovDom/addUserForm.html')
+
+                    this.searchBox.addEventListener('input', (e) => {
+                        this.useDebounce(this.searchBox.value.trim())
+                    })
+
+
+                },
+
+                render: function (userArray) {
+                    let array = userArray ? userArray : this.Users;
+                    this.userList.innerHTML = "";
+                    array.forEach((element, index) => {
                         let newRow = this.userList.insertRow()
                         newRow.setAttribute('class', 'border odd:bg-slate-50')
-                        newRow.setAttribute('data-userId', element.id)
-                        newRow.insertCell(0).innerHTML = element.fname.toUpperCase()
-                        newRow.insertCell(1).innerHTML = element.lname.toUpperCase()
-                        newRow.insertCell(2).innerHTML = element.age
-                        newRow.insertCell(3).innerHTML = element.gender.toUpperCase()
-                        newRow.insertCell(4).innerHTML = element.jobRole.toUpperCase()
-                        newRow.insertCell(5).innerHTML = element.bloodGroup
-                        newRow.insertCell(6).innerHTML = element.dob
-                        newRow.insertCell(7).innerHTML = element.currentAddress
-                        newRow.insertCell(8).innerHTML = `<img src='${element.image}' class='w-12    h-12 object-cover'>`
+                        newRow.setAttribute('data-userId', element?.id)
+                        let cell0 = newRow.insertCell(0)
+                        cell0.setAttribute('class', 'px-2')
+                        cell0.innerHTML = element?.firstName.toUpperCase()
+                        let cell1 = newRow.insertCell(1)
+                        cell1.innerHTML = element?.lastName.toUpperCase()
+                        let cell2 = newRow.insertCell(2)
+                        cell2.innerHTML = element?.age
+                        let cell3 = newRow.insertCell(3)
+                        cell3.innerHTML = element?.gender.toUpperCase()
+                        let cell4 = newRow.insertCell(4)
+                        cell4.innerHTML = element?.jobRole.toUpperCase()
+                        let cell5 = newRow.insertCell(5)
+                        cell5.innerHTML = element?.bloodGroup
+                        let cell6 = newRow.insertCell(6)
+                        cell6.innerHTML = element?.dob
+                        let cell7 = newRow.insertCell(7)
+                        cell7.innerHTML = element?.currentAddress
+                        let cell8 = newRow.insertCell(8)
+                        cell8.innerHTML = `<img src='${element?.image}' class='w-12 h-12 object-cover'>`
                         let editBtn = document.createElement('button');
 
                         editBtn.type = 'button';
-                        editBtn.setAttribute('class', 'rounded-md bg-blue-600 text-white px-2 py-1')
-                        editBtn.innerText = 'Edit'
-                        newRow.insertCell(9).appendChild(editBtn);
+                        editBtn.setAttribute('class', 'rounded-md text-blue-500 px-2')
+                        editBtn.innerHTML = `
+                        <svg class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"></path></svg>
+                        `
 
                         editBtn.addEventListener('click', (e) => {
                             let userID = e.target.closest('tr').getAttribute('data-userId');
-                            
-                            let editUser = this.Users.filter(item => item.id === +element.id)
-                            localStorage.setItem('editUser',JSON.stringify(editUser))
-
-                            this.Users = this.Users.filter(item => item.id !== +element.id)
-                            this.updateLocalStorage()
-                            window.location = '/src/20NovDom/addUserForm.html'
+                            let editUser = this.Users.filter(item => item.id == +element.id);
+                            console.log(editUser);
+                            if (!localStorage.getItem('editUser')) {
+                                localStorage.setItem('editUser', JSON.stringify(editUser))
+                                window.location = '/src/20NovDom/addUserForm.html'
+                            }
                         })
-                    })
 
-                    this.addUserBtn.addEventListener('click', (e) => window.location = '/src/20NovDom/addUserForm.html')
+                        let deleteBtn = document.createElement('button');
+                        deleteBtn.type = 'button';
+                        deleteBtn.setAttribute('class', 'rounded-md text-red-500');
+                        deleteBtn.innerHTML = `
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0z" fill="none"></path><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                        `
+
+                        deleteBtn.addEventListener('click', (e) => {
+                            let userID = e.target.closest('tr').getAttribute('data-userId');
+                            if (confirm('Are You Sure You Want to delete')) {
+                                this.removeUser(userID)
+                            }
+                        })
+                        newRow.insertCell(9).append(editBtn, deleteBtn);
+                    })
+                    this.bind()
                 },
             }
-            ListDatatoTable.render()
+            // ListDatatoTable.render()
+            window.onload = ListDatatoTable.render()
         })()
     </script>
 </body>
