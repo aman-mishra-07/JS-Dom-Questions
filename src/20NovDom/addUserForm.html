@@ -312,8 +312,8 @@
                                     || (key == 'gender')
                                     || (key == 'bloodGroup' && this.validate.checkBloodGroup(this.bloodGroup.value.trim()))
                                     || (key == 'jobRole' && this.jobRole.value != '')
-                                    || (key == 'currentAddress' && this.currentAddress.value != '')
-                                    || (key == 'permanentAddress' && this.permanentAddress.value != '')
+                                    || (key == 'currentAddress' && this.currentAddress.value.trim() != '')
+                                    || (key == 'permanentAddress' && this.permanentAddress.value.trim() != '')
                                 ) {
                                     user[key] = value;
                                 }
