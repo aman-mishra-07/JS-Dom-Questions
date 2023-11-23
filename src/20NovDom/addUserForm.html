@@ -11,17 +11,17 @@
 <body>
     <div class="relative min-h-screen w-full bg-blue-500 flex items-center justify-center p-10" data-NewUserForm>
         <div class="w-full max-w-3xl bg-white p-10 rounded-md shadow">
-            <button type="button" class="text-sm font-semibold flex items-center gap-2" data-goToAdminPanel>
+            <a href="/src/20NovDom/AdminPanel.html" class="text-sm font-semibold flex items-center gap-2">
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <polygon
                         points="3.828 9 9.899 2.929 8.485 1.515 0 10 .707 10.707 8.485 18.485 9.899 17.071 3.828 11 20 11 20 9 3.828 9">
                     </polygon>
                 </svg>
                 <span>Go Back To Admin Panel</span>
-            </button>
+            </a>
             <form id="addUserForm" method="post" action="" class="space-y-4">
                 <h1 class="font-semibold text-3xl text-center" data-formHeading>Register New User</h1>
-                <div class="grid grid-cols-2 gap-4 items-center">
+                <div class="grid grid-cols-2 gap-8 items-center">
                     <div>
                         <label for="firstName" class="block">First Name</label>
                         <input type="text" name="firstName" id="firstName" class="border p-2 rounded-md w-full">
@@ -31,13 +31,13 @@
                     <div>
                         <label for="lastName" class="block">Last Name</label>
                         <input type="text" name="lastName" id="LastName" class="border p-2 rounded-md w-full">
-                        <p data-lastNameError class="text-red-600"></p>
+                        <p data-lastNameError class="text-red-600 "></p>
                     </div>
 
                     <div>
                         <label for="age" class="block">Age</label>
                         <input type="number" name="age" id="age" class="border p-2 rounded-md w-full hidden-spinner">
-                        <p data-ageError class="text-red-600 block"></p>
+                        <p data-ageError class="text-red-600 "></p>
                     </div>
 
                     <fieldset class="">
@@ -101,7 +101,8 @@
                             class="border resize-none p-2 rounded-md w-full "></textarea>
                         <p data-currentAddressError class="text-red-600"></p>
                         <div class="space-x-2">
-                            <input type="checkbox" id="sameAddress"><label>Same Permanent address as Current
+                            <input type="checkbox" id="sameAddress">
+                            <label for="sameAddress">Same Permanent address as Current
                                 Address</label>
                         </div>
                     </div>
@@ -121,7 +122,7 @@
         <div data-modal class="fixed inset-0 bg-black bg-opacity-20 hidden items-center justify-center">
             <div class="p-10 w-full max-w-lg bg-green-600 rounded-md space-y-4">
                 <h2 class="font-bold text-2xl text-white flex items-center justify-between">
-                    <span>New User Added SuccessFully </span>
+                    <span data-successMsg>New User Added SuccessFully </span>
                     <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path
                             d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z">
@@ -129,9 +130,10 @@
                     </svg>
                 </h2>
 
-                <button type="button" data-goToAdminPanel
-                    class="w-full bg-white hover:bg-opacity-90 font-semibold rounded-md px-4 py-1">Ok, Go to
-                    AdminPanel</button>
+                <a href="/src/20NovDom/AdminPanel.html"
+                    class="w-full block text-center bg-white hover:bg-opacity-90 font-semibold rounded-md px-4 py-1">Ok,
+                    Go to
+                    AdminPanel</a>
             </div>
         </div>
     </div>
@@ -140,7 +142,7 @@
         (function () {
             'use strict'
 
-            const createUser = {
+            const user = {
                 Users: localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [],
                 userform: document.querySelector('#addUserForm'),
 
@@ -164,28 +166,32 @@
                 sameAddress: document.querySelector('#sameAddress'),
                 imageBox: document.querySelector('[data-imageBox]'),
                 formHeading: document.querySelector('[data-formHeading]'),
+                successMsg: document.querySelector('[data-successMsg]'),
 
-                errorBox: {
-                    fnameError: document.querySelector('[data-fnameError]'),
-                    lastNameError: document.querySelector('[data-lastNameError]'),
-                    ageError: document.querySelector('[data-ageError]'),
-                    genderError: document.querySelector('[data-genderError]'),
-                    dobError: document.querySelector('[data-dobError]'),
-                    bloodGroupError: document.querySelector('[data-bloodGroupError]'),
-                    emailError: document.querySelector('[data-emailError]'),
-                    jobRoleError: document.querySelector('[data-jobRoleError]'),
-                    photographError: document.querySelector('[data-photographError]'),
-                    currentAddressError: document.querySelector('[data-currentAddressError]'),
-                    permanentAddressError: document.querySelector('[data-permanentAddressError]'),
+        
+                setError: {
+                    showError: function (elemId, err) {
+                        elemId.innerHTML = err;
+                    },
+                    errorBox: {
+                        fnameError: document.querySelector('[data-fnameError]'),
+                        lastNameError: document.querySelector('[data-lastNameError]'),
+                        ageError: document.querySelector('[data-ageError]'),
+                        genderError: document.querySelector('[data-genderError]'),
+                        dobError: document.querySelector('[data-dobError]'),
+                        bloodGroupError: document.querySelector('[data-bloodGroupError]'),
+                        emailError: document.querySelector('[data-emailError]'),
+                        jobRoleError: document.querySelector('[data-jobRoleError]'),
+                        photographError: document.querySelector('[data-photographError]'),
+                        currentAddressError: document.querySelector('[data-currentAddressError]'),
+                        permanentAddressError: document.querySelector('[data-permanentAddressError]'),
+                    },
                 },
-                setError: function (elemId, err) {
-                    elemId.innerHTML = err;
-                },
-
                 changeUser: [],
                 editUser: function () {
                     if (localStorage.getItem('editUser')) {
-                        this.formHeading.innerHTML = 'Edit Profile'
+                        this.formHeading.innerHTML = 'Edit Profile';
+                        this.successMsg.innerHTML = 'Profile Updated'
                         let editUserId = JSON.parse(localStorage.getItem('editUser'))
                         let editUserData = this.Users.filter((item) => item.id === +editUserId[0]?.id)
                         let itemIndex = this.Users.indexOf(editUserData[0])
@@ -218,62 +224,116 @@
                         return (/^(A|B|AB|O)[+-]$/.test(bloodGroup)) ? true : false;
                     },
                     checkDate: function (date) {
-                        return date.match('0000-00-00') ? true : false
+                        return (date > Date.now()) ? true : false
                     },
                     checkAge: function (age) {
                         return (age > 0) ? true : false;
                     }
 
                 },
-
-
+                createNewUser: function () {
+                    if (this.changeUser == '') {
+                        let newUser = new FormData(this.userform)
+                        let user = {};
+                        newUser.forEach((value, key) => {
+                            if ((key === 'firstName' && this.validate.checkName(this.firstName.value.trim()))
+                                || (key === 'lastName' && this.validate.checkName(this.lastName.value.trim()))
+                                || (key === 'age' && this.validate.checkAge(this.age.value.trim()))
+                                || (key === 'email' && this.validate.checkEmail(this.email.value.trim()))
+                                || (key === 'dob' && this.dob.value != '')
+                                || (key == 'gender')
+                                || (key == 'bloodGroup' && this.validate.checkBloodGroup(this.bloodGroup.value.trim()))
+                                || (key == 'jobRole' && this.jobRole.value != '')
+                                || (key == 'currentAddress' && this.currentAddress.value.trim() != '')
+                                || (key == 'permanentAddress' && this.permanentAddress.value.trim() != '')
+                            ) {
+                                user[key] = value;
+                                newUserLength++
+                            }
+                            if (key == 'image' && this.imageUrl != '') {
+                                user[key] = this.imageUrl
+                                newUserLength++
+                            }
+                        })
+                        if (Object.entries(user).length == 11) {
+                            user.id = Date.now()
+                            this.Users.push(user);
+                            this.modal.classList.remove('hidden')
+                            this.modal.classList.add('flex')
+                            this.updateLocalStorage();
+                        } else {
+                            alert('Please fill all fields')
+                        }
+                    }
+                    else {
+                        let itemAt = this.Users.indexOf(this.changeUser);
+                        if (itemAt !== -1) {
+                            this.Users[itemAt].firstName = this.firstName.value;
+                            this.Users[itemAt].lastName = this.lastName.value;
+                            this.Users[itemAt].age = this.age.value;
+                            this.Users[itemAt].gender = this.gender.value;
+                            this.Users[itemAt].dob = this.dob.value;
+                            this.Users[itemAt].email = this.email.value;
+                            this.Users[itemAt].bloodGroup = this.bloodGroup.value;
+                            this.Users[itemAt].jobRole = this.jobRole.value;
+                            this.Users[itemAt].currentAddress = this.currentAddress.value;
+                            this.Users[itemAt].permanentAddress = this.permanentAddress.value;
+                            if (this.imageUrl !== '') {
+                                this.Users[itemAt].image = this.imageUrl;
+                            }
+                            this.modal.classList.remove('hidden')
+                            this.modal.classList.add('flex')
+                            this.updateLocalStorage();
+                            this.userform.reset();
+                        }
+                    }
+                },
                 bind: function () {
-
-                    this.firstName.addEventListener('input', (e) => {
+                    this.editUser();
+                    this.firstName.addEventListener('blur', (e) => {
                         if (!this.validate.checkName(this.firstName.value.trim())) {
-                            this.setError(this.errorBox.fnameError, 'number and special char Not allowed')
+                            this.setError.showError(this.setError.errorBox.fnameError, '*special characters not allowed')
                             return
                         }
-                        this.setError(this.errorBox.fnameError, '')
+                        this.setError.showError(this.setError.errorBox.fnameError, '')
                     })
-                    this.lastName.addEventListener('input', (e) => {
+                    this.lastName.addEventListener('blur', (e) => {
                         if (!this.validate.checkName(this.lastName.value.trim())) {
-                            this.setError(this.errorBox.lastNameError, 'number and special char Not allowed')
+                            this.setError.showError(this.setError.errorBox.lastNameError, 'special characters not allowed')
                             return;
                         }
-                        this.setError(this.errorBox.lastNameError, '')
+                        this.setError.showError(this.setError.errorBox.lastNameError, '')
                     })
-                    this.bloodGroup.addEventListener('input', (e) => {
+                    this.bloodGroup.addEventListener('blur', (e) => {
                         if (!this.validate.checkBloodGroup(this.bloodGroup.value)) {
-                            this.setError(this.errorBox.bloodGroupError, 'Enter valid blood group')
+                            this.setError.showError(this.setError.errorBox.bloodGroupError, 'enter valid blood group')
                             return
                         }
-                        this.setError(this.errorBox.bloodGroupError, '')
+                        this.setError.showError(this.setError.errorBox.bloodGroupError, '')
                     })
-                    this.dob.addEventListener('input', e => {
+                    this.dob.addEventListener('blur', e => {
 
                         if (!this.validate.checkDate(this.dob.value)) {
-                            this.setError(this.errorBox.dobError, 'enter correct date')
+                            this.setError.showError(this.setError.errorBox.dobError, '*enter correct date')
                         }
-                        this.setError(this.errorBox.dobError, '')
+                        this.setError.showError(this.setError.errorBox.dobError, '')
                     })
-                    this.email.addEventListener('input', (e) => {
+                    this.email.addEventListener('blur', (e) => {
                         if (!this.validate.checkEmail(this.email.value.trim())) {
-                            this.setError(this.errorBox.emailError, 'enter correct email')
+                            this.setError.showError(this.setError.errorBox.emailError, '*enter correct email')
                             return;
                         }
-                        this.setError(this.errorBox.emailError, '')
+                        this.setError.showError(this.setError.errorBox.emailError, '')
                     })
-                    this.age.addEventListener('input', (e) => {
+                    this.age.addEventListener('blur', (e) => {
                         if (!this.validate.checkAge(this.age.value.trim())) {
-                            this.setError(this.errorBox.ageError, 'invalid Age')
+                            this.setError.showError(this.setError.errorBox.ageError, '*invalid Age')
                             return;
                         }
-                        this.setError(this.errorBox.ageError, '')
+                        this.setError.showError(this.setError.errorBox.ageError, '')
 
                     })
-
-                    this.sameAddress.addEventListener('change', (e) => {
+                    this.sameAddress.addEventListener('click', (e) => {
                         if (this.sameAddress.checked == true) {
                             this.permanentAddress.innerHTML = this.currentAddress.value;
                             return;
@@ -289,82 +349,18 @@
                             this.imageBox.src = selectedfile.result
                         })
                     })
-
-                    document.querySelectorAll('[data-goToAdminPanel]').forEach(item => {
-                        item.addEventListener('click', (e) => {
-                            window.location = '/src/20NovDom/AdminPanel.html'
-                        })
-                    })
-
                     this.userform.addEventListener('submit', (e) => {
                         e.preventDefault()
-
-                        if (this.changeUser == '') {
-                            let newUser = new FormData(this.userform)
-                            let user = {};
-                            user.id = Date.now()
-                            newUser.forEach((value, key) => {
-                                if ((key === 'firstName' && this.validate.checkName(this.firstName.value.trim()))
-                                    || (key === 'lastName' && this.validate.checkName(this.lastName.value.trim()))
-                                    || (key === 'age' && this.validate.checkAge(this.age.value.trim()))
-                                    || (key === 'email' && this.validate.checkEmail(this.email.value.trim()))
-                                    || (key === 'dob' && this.dob.value != '')
-                                    || (key == 'gender')
-                                    || (key == 'bloodGroup' && this.validate.checkBloodGroup(this.bloodGroup.value.trim()))
-                                    || (key == 'jobRole' && this.jobRole.value != '')
-                                    || (key == 'currentAddress' && this.currentAddress.value.trim() != '')
-                                    || (key == 'permanentAddress' && this.permanentAddress.value.trim() != '')
-                                ) {
-                                    user[key] = value;
-                                }
-                                if (key == 'image' && this.imageUrl != '') {
-                                    user[key] = this.imageUrl
-                                }
-                            })
-                            if (user != {}) {
-                                this.Users.push(user);
-                                console.log(user);
-                                this.modal.classList.remove('hidden')
-                                this.modal.classList.add('flex')
-                                this.updateLocalStorage();
-
-                            } else {
-                                alert('Please fill all fields')
-                            }
-
-                        } else {
-                            let itemAt = this.Users.indexOf(this.changeUser);
-                            if (itemAt !== -1) {
-                                this.Users[itemAt].firstName = this.firstName.value;
-                                this.Users[itemAt].lastName = this.lastName.value;
-                                this.Users[itemAt].age = this.age.value;
-                                this.Users[itemAt].gender = this.gender.value;
-                                this.Users[itemAt].dob = this.dob.value;
-                                this.Users[itemAt].email = this.email.value;
-                                this.Users[itemAt].bloodGroup = this.bloodGroup.value;
-                                this.Users[itemAt].jobRole = this.jobRole.value;
-                                this.Users[itemAt].currentAddress = this.currentAddress.value;
-                                this.Users[itemAt].permanentAddress = this.permanentAddress.value;
-                                if (this.imageUrl !== '') {
-                                    this.Users[itemAt].image = this.imageUrl;
-                                }
-                                this.modal.classList.remove('hidden')
-                                this.modal.classList.add('flex')
-                                this.updateLocalStorage();
-                                this.userform.reset();
-                            }
-                        }  
+                        this.createNewUser();
                     })
                 },
-
                 render: function () {
-                    this.editUser();
                     this.bind();
                 }
             }
-            createUser.render()
-            // window.onload = createUser.render()
+            user.render()
         })()
+
     </script>
 </body>
 
