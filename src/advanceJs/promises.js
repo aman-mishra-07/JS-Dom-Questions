@@ -40,3 +40,16 @@ checkOddEven(5)
 checkOddEven(2)
 checkOddEven('uhkdj')
 checkOddEven('80')
+
+const getImagePath = (image) => {
+    return new Promise((resolve, reject) => {
+        let selectedfile = new FileReader();
+        selectedfile.readAsDataURL(image)
+        selectedfile.addEventListener('load', () => {
+            resolve(selectedfile.result)
+        });
+        selectedfile.addEventListener('error', () => {
+            reject(selectedfile.error)
+        });
+    }).then(value => value).catch(err => err)
+}

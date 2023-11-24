@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debouncing</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body>
+    <div class="p-10">
+        <input type="search" id="search" class="p-2 border rounded-md shadow outline-none" placeholder="Search...">
+    </div>
+
+    <script>
+        (function(){
+            'use strict'
+
+            
+            const useDebounce = (func, thisArg) => {
+              
+                let timer = null;
+                return () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        func.bind(thisArg)
+                    }, 1000)
+                }
+            }
+            
+            let user = {
+                name : 'aman',
+                age : 21,
+            }
+            let searchBar = document.querySelector('#search')
+            searchBar.addEventListener('input', () => {
+                useDebounce(() =>{
+                    console.log(this);
+                }, user)
+            })
+        })()
+    </script>
+</body>
+</html>
