@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fillcarts</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <header class="w-full p-2 bg-blue-500">
+        <nav class="container flex justify-between mx-auto">
+            <a href="#" class="text-2xl font-semibold text-white">Fillcarts Shopping</a>
+
+            <ul class="hidden md:flex items-center gap-4 text-white font-semibold">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Mens</a></li>
+                <li><a href="#">Women</a></li>
+                <li><a href="#">Children</a></li>
+                <li><a href="#">Latest Trends</a></li>
+            </ul>
+
+            <input type="search" name="search" id="search" placeholder="search products..."
+                class="hidden xl:block outline-none px-2 py-1 rounded-md w-full max-w-xs">
+
+            <div class="flex items-center gap-8">
+                <a href="cart.html" data-openCart class="relative text-white">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z">
+                        </path>
+                    </svg>
+                    <span
+                        class="absolute -top-2 -right-3 bg-black bg-opacity-40 w-5 h-5 rounded-full flex items-center justify-center"
+                        data-productCount>0</span>
+                </a>
+    
+                <a href="#">
+                    <img src="https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
+                        alt="user Img" class="w-8 h-8 object-cover rounded-full">
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="bg-slate-100 w-full min-h-fit">
+        <div class="container mx-auto px-4">
+            <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-8 p-4" data-productList>
+            </ul>
+        </div>
+    </main>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
