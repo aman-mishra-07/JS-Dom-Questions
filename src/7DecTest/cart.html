@@ -1,82 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart, FillCarts Shopping</title>
     <link rel="stylesheet" href="/dist/output.css">
 </head>
+
 <body>
     <form action="#" id="delivaryForm">
-    <main class="w-full min-h-screen bg-slate-100 px-20 py-10 flex flex-col gap-4">
-        <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-bold flex items-center gap-2"> 
-                <a href="index.html">
-                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
-                </a>
-                <span>Your Cart</span>
-            </h1>
-            <button type="button" data-clearCart class="bg-blue-500 px-2 py-1 rounded shadow text-white">Clear Cart</button>
-        </div>
-        <ul class="flex-1 grid grid-cols-2 gap-4 " data-cartList>
-
-        </ul>
-
-        <div class="bg-white shadow rounded px-4 py-2 space-y-2">
-            <div class="font-semibold flex justify-between items-center">
-                <p>Total</p>
-                <strong data-total>0</strong>
+        <main class="w-full min-h-screen bg-slate-100 p-4 sm:px-20 sm:py-10 flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold flex items-center gap-2">
+                    <a href="index.html">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                        </svg>
+                    </a>
+                    <span>Your Cart</span>
+                </h1>
+                <button type="button" data-clearCart class="bg-blue-500 px-2 py-1 rounded shadow text-white">Clear
+                    Cart</button>
             </div>
-        </div>
+            <ul class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 " data-cartList>
 
-        <fieldset class="bg-white rounded w-full p-4 shadow">
-            <h2 class="font-semibold text-xl">Delivary Info</h2>
-            <div class="grid grid-cols-2 gap-y-4 gap-x-8">
-                <div>
-                    <label for="firstName" class="block">First Name</label>
-                    <input type="text" name="firstName" id="firstName" class="p-2 rounded-md border w-full">
-                    <p data-firstNameError class="text-red-600"></p>
+            </ul>
+
+            <div class="bg-white shadow rounded px-4 py-2 space-y-2">
+                <div class="font-semibold flex justify-between items-center">
+                    <p>Total</p>
+                    <strong data-total>0</strong>
                 </div>
-                <div>
-                    <label for="lastName" class="block">Last Name</label>
-                    <input type="text" name="lastName" id="lastName" class="p-2 rounded-md border w-full">
-                    <p data-lastNameError class="text-red-600"></p>
-                </div>
-                <div class="col-span-2">
-                    <label for="address" class="block">Address</label>
-                    <input type="text" name="address" id="address" class="p-2 rounded-md border w-full">
-                    <p data-addressError class="text-red-600"></p>
-                </div>
-                <div>
-                    <label for="city" class="block">City</label>
-                    <input type="text" name="city" id="city" class="p-2 rounded-md border w-full">
-                    <p data-cityError class="text-red-600"></p>
-                </div>
-                <div>
-                    <label for="state" class="block">State</label>
-                    <input type="text" name="state" id="state" class="p-2 rounded-md border w-full">
-                    <p data-stateError class="text-red-600"></p>
-                </div>
-                <div>
-                    <label for="zip" class="block">Zip</label>
-                    <input type="number" name="zip" id="zip" class="p-2 rounded-md border w-full hidden-spinner ">
-                    <p data-zipError class="text-red-600"></p>
-                </div>
-                <div>
-                    <label for="phone" class="block">phone</label>
-                    <input type="tel" name="phone" id="phone" class="p-2 rounded-md border w-full">
-                    <p data-phoneError class="text-red-600"></p>
-                </div>
-                <button type="submit" id="rzp-button1" class="bg-blue-500 col-span-2 p-2 text-white font-semibold w-full rounded-md">
-                 Pay</button>
             </div>
-        </fieldset>
-        
 
-    </main>
+            <fieldset class="bg-white rounded w-full p-4 shadow">
+                <h2 class="font-semibold text-xl">Delivary Info</h2>
+                <div class="space-y-5 sm:space-y-0 sm:grid  grid-cols-2 gap-y-4 gap-x-8">
+                    <div>
+                        <label for="firstName" class="block">First Name</label>
+                        <input type="text" name="firstName" id="firstName" class="p-2 rounded-md border w-full">
+                        <p data-firstNameError class="text-red-600"></p>
+                    </div>
+                    <div>
+                        <label for="lastName" class="block">Last Name</label>
+                        <input type="text" name="lastName" id="lastName" class="p-2 rounded-md border w-full">
+                        <p data-lastNameError class="text-red-600"></p>
+                    </div>
+                    <div class="col-span-2">
+                        <label for="address" class="block">Address</label>
+                        <input type="text" name="address" id="address" class="p-2 rounded-md border w-full">
+                        <p data-addressError class="text-red-600"></p>
+                    </div>
+                    <div>
+                        <label for="city" class="block">City</label>
+                        <input type="text" name="city" id="city" class="p-2 rounded-md border w-full">
+                        <p data-cityError class="text-red-600"></p>
+                    </div>
+                    <div>
+                        <label for="state" class="block">State</label>
+                        <input type="text" name="state" id="state" class="p-2 rounded-md border w-full">
+                        <p data-stateError class="text-red-600"></p>
+                    </div>
+                    <div>
+                        <label for="zip" class="block">Zip</label>
+                        <input type="number" name="zip" id="zip" class="p-2 rounded-md border w-full hidden-spinner ">
+                        <p data-zipError class="text-red-600"></p>
+                    </div>
+                    <div>
+                        <label for="phone" class="block">phone</label>
+                        <input type="tel" name="phone" id="phone" class="p-2 rounded-md border w-full">
+                        <p data-phoneError class="text-red-600"></p>
+                    </div>
+                    <button type="submit" id="rzp-button1"
+                        class="bg-blue-500 col-span-2 p-2 text-white font-semibold w-full rounded-md">
+                        Pay</button>
+                </div>
+            </fieldset>
+
+
+        </main>
     </form>
 
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="cart.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </body>
+
 </html>

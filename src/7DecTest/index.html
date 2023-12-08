@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fillcarts</title>
-    <link rel="stylesheet" href="/dist/output.css">
+    <link rel="stylesheet" href="/dist/output.css" />
+    <link href="//unpkg.com/viewerjs/dist/viewer.css" rel="stylesheet">
+    <script src="//unpkg.com/viewerjs"></script>
 </head>
 
-<body>
-    <header class="w-full p-2 bg-blue-500">
+<body class="hidden-scroll">
+    <header class="w-full p-2 bg-blue-600">
         <nav class="container flex justify-between mx-auto">
-            <a href="#" class="text-2xl font-semibold text-white">Fillcarts Shopping</a>
+            <a href="index.html" class="text-2xl font-semibold text-white">Fillcarts Shopping</a>
 
             <ul class="hidden md:flex items-center gap-4 text-white font-semibold">
-                <li><a href="#">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="#">Mens</a></li>
                 <li><a href="#">Women</a></li>
                 <li><a href="#">Children</a></li>
@@ -22,10 +24,10 @@
             </ul>
 
             <input type="search" name="search" id="search" placeholder="search products..."
-                class="hidden xl:block outline-none px-2 py-1 rounded-md w-full max-w-xs">
+                class="hidden xl:block outline-none px-2 py-1 rounded w-full max-w-xs" />
 
             <div class="flex items-center gap-8">
-                <a href="cart.html" data-openCart class="relative text-white">
+                <a href="cart.html" class="relative text-white">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         viewBox="0 0 16 16">
                         <path
@@ -33,25 +35,79 @@
                         </path>
                     </svg>
                     <span
-                        class="absolute -top-2 -right-3 bg-black bg-opacity-40 w-5 h-5 rounded-full flex items-center justify-center"
+                        class="absolute -top-2 -right-3 bg-black bg-opacity-40 w-5 h-5 rounded-full flex font-semibold items-center justify-center"
                         data-productCount>0</span>
                 </a>
-    
                 <a href="#">
                     <img src="https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
-                        alt="user Img" class="w-8 h-8 object-cover rounded-full">
+                        alt="user Img" class="w-8 h-8 object-cover rounded-full" />
                 </a>
             </div>
         </nav>
     </header>
 
-    <main class="bg-slate-100 w-full min-h-fit">
+    <main class="bg-slate-200 w-full min-h-screen">
         <div class="container mx-auto px-4">
-            <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-8 p-4" data-productList>
-            </ul>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-8 py-4 sm:p-4"
+                data-productList></ul>
         </div>
     </main>
 
+    <button type="button" data-scrollTop class="text-center w-full bg-slate-500 py-2 font-semibold text-white">
+        Back to top
+    </button>
+
+    <footer class="w-full p-4 sm:pt-10 sm:px-20 bg-gray-600 text-white space-y-4">
+        <h2 class="text-2xl font-semibold"><a href="index.html">Fillcarts Shopping</a></h2>
+        <div class="w-full sm:p-8 grid grid-cols-2 gap-8 sm:flex sm:flex-row justify-around">
+            <ul class="space-y-2">
+                <li class="font-semibold">Get to Know us</li>
+                <li class="text-sm hover:underline"><a href="#">About Us</a></li>
+                <li class="text-sm hover:underline"><a href="#">Careers</a></li>
+                <li class="text-sm hover:underline"><a href="#">Press release</a></li>
+            </ul>
+            <ul class="space-y-2">
+                <li class="font-semibold">Connect with us</li>
+                <li class="text-sm hover:underline">
+                    <a href="https://www.instagram.com">Instagram</a>
+                </li>
+                <li class="text-sm hover:underline">
+                    <a href="https://www.facebook.com">Facebook</a>
+                </li>
+                <li class="text-sm hover:underline">
+                    <a href="https://www.x.com">Twitter</a>
+                </li>
+            </ul>
+            <ul class="space-y-2">
+                <li class="font-semibold">Make Money with us</li>
+                <li class="text-sm hover:underline">
+                    <a href="#">Sell on Fillcarts</a>
+                </li>
+                <li class="text-sm hover:underline">
+                    <a href="#">Sell under Fillcarts Accelerator</a>
+                </li>
+                <li class="text-sm hover:underline">
+                    <a href="#">Protect and Build Your Brand</a>
+                </li>
+                <li class="text-sm hover:underline">
+                    <a href="#">Fillcarts Global Selling</a>
+                </li>
+            </ul>
+            <ul class="space-y-2">
+                <li class="font-semibold">Let us help You</li>
+                <li class="text-sm hover:underline">
+                    <a href="#">COVID-19 and FillCarts</a>
+                </li>
+                <li class="text-sm hover:underline"><a href="#">Your Account</a></li>
+                <li class="text-sm hover:underline">
+                    <a href="#">100% Purchase Protection</a>
+                </li>
+            </ul>
+        </div>
+        <p class="uppercase p-4 text-center">
+            COPYRIGHT &copy; 2020, All Rights reserved
+        </p>
+    </footer>
     <script src="index.js"></script>
 </body>
 
