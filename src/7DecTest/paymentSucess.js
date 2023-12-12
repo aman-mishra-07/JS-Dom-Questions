@@ -32,7 +32,7 @@
                 <p>${prefill?.contact}</p>
             </li>
               `
-            // localStorage.removeItem('paymentDetails')
+            localStorage.removeItem('cart')
 
         } 
     }

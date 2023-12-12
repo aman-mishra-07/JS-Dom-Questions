@@ -78,10 +78,14 @@
                         Pay</button>
                 </div>
             </fieldset>
-
-
         </main>
     </form>
+    <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-10 hidden" id="modal">
+        <div class="px-4 py-2 rounded-md shadow bg-white space-y-4 border flex flex-col items-center">
+            <h3 class="font-semibold text-xl" data-msg></h3>
+            <button type="button" class="bg-gray-200 px-2 py-1 border rounded font-semibold w-full" data-closeModal>Ok</button>
+        </div>
+    </div>
 
     <script src="cart.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

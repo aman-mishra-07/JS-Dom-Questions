@@ -9,7 +9,7 @@
             "name": "FillCarts shopping", //your business name
             "description": "Test Transaction",
             "image": 'https://t3.ftcdn.net/jpg/03/19/57/68/360_F_319576874_VN6uaMoGHMzbo6wBI5eFtBlIUaXvljH6.jpg',
-            "order_id": "order_NAvdpyjOZrfV2L", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "order_id": "order_NBNGcj5exJqoMH", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function () {
                 window.location = 'paymentSucces.html'
             },
@@ -103,17 +103,11 @@
             this.updateLocalStorage()
             this.renderCart();
         },
-        updateCart: function (e) {
-            if (e.target.hasAttribute('data-btn')) {
-                const cartItemId = e.target.closest('li').getAttribute('data-id');
-                let btn = e.target.dataset.btn;
-                if (btn === 'incr') {
-                    this.increaseQty(cartItemId)
-                }
-                if (btn === 'decr') {
-                    this.decreaseQty(cartItemId)
-                }
-            }
+        setQty: function (productId, val) {
+            let item = this.cart.find(item => item.id === +productId)
+            let itemAt = this.cart.indexOf(item)
+            this.cart[itemAt].qty = val
+            this.updateLocalStorage();
         },
         increaseQty: function (productId) {
             let item = this.cart.find(item => item.id === +productId)
@@ -137,6 +131,24 @@
                 document.querySelector(`[data-${error.name}Error]`).innerHTML = error.message;
             })
         },
+
+        showMessage : function(msg){
+            const msgModal = document.querySelector('#modal');
+            const msgBox = document.querySelector('[data-msg]');
+            const closeModalBtn = document.querySelector('[data-closeModal]');
+            msgBox.innerHTML = msg;
+            msgModal.classList.toggle('hidden');
+            msgModal.classList.add('flex');
+            closeModalBtn.addEventListener('click', () => {
+                msgModal.classList.remove('flex');
+                msgModal.classList.add('hidden');
+            })
+            setTimeout(()=>{
+                msgModal.classList.remove('flex');
+                msgModal.classList.add('hidden');
+            },3000)
+        },
+
         bind: function () {
             const selectors = {
                 cartList: document.querySelector('[data-cartList]'),
@@ -149,13 +161,34 @@
                 state: document.querySelector('[name="state"]'),
                 zip: document.querySelector('[name="zip"]'),
                 phone: document.querySelector('[name="phone"]'),
+                increaseQtyBtn : document.querySelectorAll('[data-btn="incr"]'),
+                decreaseQtyBtn : document.querySelectorAll('[data-btn="decr"]'),
+                qtyInput : document.querySelectorAll('[data-qtyInput]'),
             };
+            
+            selectors.increaseQtyBtn.forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    let productId = e.target.closest('li').getAttribute('data-id');
+                    this.increaseQty(productId)
+                    this.renderCart()
+                })
+            })
+            selectors.decreaseQtyBtn.forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    let productId = e.target.closest('li').getAttribute('data-id');
+                    this.decreaseQty(productId)
+                    this.renderCart()
+                })
+            })
+            selectors.qtyInput.forEach((inputElem) => {
+                inputElem.addEventListener('blur', (e) => {
+                    let productId = e.target.closest('li').getAttribute('data-id');
+                    this.setQty(productId,e.target.value)
+                    this.renderCart()
+                })
+            })
 
             selectors.cartList.addEventListener('click', (e) => {
-                if (e.target.hasAttribute('data-btn')) {
-                    this.updateCart(e)
-                    this.renderCart()
-                }
                 if (e.target.hasAttribute('data-removeFromCart')) {
                     let productId = e.target.closest('li').getAttribute('data-id')
                     this.removeFromCart(productId);
@@ -221,7 +254,11 @@
                 e.preventDefault()
                 let delivaryAddress = new FormData(selectors.delivaryform)
                 let user = Object.fromEntries(delivaryAddress);
-                if (validation(user).isValid) {
+                if(this.cart.length === 0){
+                    this.showMessage('Your cart in empty')
+                    return;
+                }
+                if (validation(user).isValid && this.cart.length > 0) {
                     let totalAmount = this.cart.map(item => item?.qty * item?.price).reduce((sum, nextitem) => sum + nextitem)
                     user.amount = totalAmount;
                     makePaymentApi(user)
@@ -245,7 +282,7 @@
                     <div class="flex-1 flex flex-col">
                         <div class="flex justify-between gap-2 text-base font-medium text-gray-900">
                             <h3>${title}</h3>
-                            <p class="ml-4">$${amount}</p>
+                            <p class="ml-4">$${price}</p>
                         </div>
                         <div>
                             <p class="text-sm flex items-center gap-2"><svg class="w-3 h-3 text-yellow-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -255,7 +292,7 @@
                         <div class="items-end flex-1 flex justify-between gap-2 text-sm">
                             <p class="text-gray-500 text-base border px-2">
                                 <button type="button" data-btn="decr">&minus;</button>
-                                <span>${qty}</span>
+                                <input type="number" data-qtyInput class="w-6 hidden-spinner" value="${qty}">
                                 <button type="button" data-btn="incr">&plus;</button>
                             </p>
                             <span class="hidden sm:block sm:flex-1">from stock of ${stock} </span>
@@ -268,17 +305,18 @@
                 </li>
                 `
             }).join('');
+            const totalPriceCont = document.querySelector('[data-total]');
             let total = this.cart.map(item => {
-                return item?.qty * item?.price
+                return item?.qty * item?.price;
             })
             if (total.length != 0) {
                 total = total?.reduce((sum, nextitem) => {
-                    return sum + nextitem
+                    return sum + nextitem;
                 })
-                document.querySelector('[data-total]').innerHTML = Number.parseFloat(total).toFixed(2)
+                totalPriceCont.innerHTML = Number.parseFloat(total).toFixed(2);
             }
             if (total.length == 0) {
-                document.querySelector('[data-total]').innerHTML = 0;
+                totalPriceCont.innerHTML = 0;
             }
             this.bind()
         }
