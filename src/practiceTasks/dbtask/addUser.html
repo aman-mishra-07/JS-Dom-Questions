@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>working with database</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="w-full min-h-screen flex items-center justify-center bg-gradient-to-tr from-green-400 to-blue-900">
+        <div class="p-8 rounded-md border space-y bg-white bg-opacity-60 backdrop-blur-md">
+            <h1 class="font-semibold text-2xl flex items-center">
+                <a href="adminPanel.html" class="">
+                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <polygon
+                            points="3.828 9 9.899 2.929 8.485 1.515 0 10 .707 10.707 8.485 18.485 9.899 17.071 3.828 11 20 11 20 9 3.828 9">
+                        </polygon>
+                    </svg>
+                </a>
+                <span class="flex-1 text-center">Sign Up Form</span>
+            </h1>
+            <form id="userForm" method="post" class="grid grid-cols-2 gap-8 w-fit">
+                <div>
+                    <label for="firstName" class="block">First Name</label>
+                    <input type="text" name="firstName" id="firstName" class="bg-transparent border-black border p-2 rounded-md w-full">
+                    <p data-firstNameError class="text-red-600"></p>
+                </div>
+
+                <div>
+                    <label for="lastName" class="block">Last Name</label>
+                    <input type="text" name="lastName" id="LastName" class="bg-transparent border-black border p-2 rounded-md w-full">
+                    <p data-lastNameError class="text-red-600 "></p>
+                </div>
+
+                <div class="flex gap-2 items-center col-span-2">
+                    <div class="h-14 aspect-square border shrink-0 rounded-full overflow-hidden">
+                        <img src="https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
+                            alt="user" class="w-full h-full object-cover" data-imageBox>
+                    </div>
+                    <label for="image">Photograph</label>
+                    <input type="file" name="image" accept="image/png, image/jpeg, image/jpg"
+                        class="border p-2 rounded-md w-full border-black bg-transparent">
+                    <p class="text-red-600" data-imageError></p>
+                </div>
+
+                <fieldset class="">
+                    <legend class="">Gender</legend>
+                    <div class="space-x-2 flex">
+                        <input type="radio" name="gender" id="male" value="male"><label for="male">Male</label>
+                        <input type="radio" name="gender" id="female" value="female"><label for="female">Female</label>
+                        <input type="radio" name="gender" value="transgender" id="transgender"><label
+                            for="transgender">Transgender</label>
+                        <input type="radio" name="gender" value="others" id="others"><label for="others">Others</label>
+                    </div>
+                    <p data-genderError class="text-red-600"></p>
+                </fieldset>
+
+                <div>
+                    <label for="DOB">Date Of Birth</label>
+                    <input type="date" name="dob" id="DOB" class="bg-transparent border-black border p-2 rounded-md w-full">
+                    <p data-dobError class="text-red-600"></p>
+                </div>
+
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="bg-transparent border-black border p-2 rounded-md w-full">
+                    <p data-emailError class="text-red-600"></p>
+                </div>
+
+                <div>
+                    <label for="BloodGroup">Blood Group</label>
+                    <input type="text" name="bloodGroup" id="BloodGroup" class="bg-transparent border-black border p-2 rounded-md w-full"
+                        placeholder="example(A+)">
+                    <p data-bloodGroupError class="text-red-600"></p>
+                </div>
+                <div>
+                    <label for="phone">Phone</label>
+                    <input type="tel" name="phone" id="phone" class="bg-transparent border-black border p-2 rounded-md w-full"
+                        placeholder="908045****">
+                    <p data-phoneError class="text-red-600"></p>
+                </div>
+
+                <div>
+                    <label for="jobRole">Role</label>
+                    <select name="jobRole" id="jobRole" class="bg-transparent border-black border p-2 rounded-md w-full">
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="employee">Employee</option>
+                        <option value="hr">HR</option>
+                    </select>
+                    <p data-jobRoleError class="text-red-600"></p>
+                </div>
+                <button type="submit"
+                    class="p-2 bg-blue-500 text-white font-semibold rounded col-span-2">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center " id="loader">
+        <div
+            class="w-10 h-10 border-y-4 border-r-4 border-l-4 border-l-transparent border-black rounded-full animate-spin">
+        </div>
+    </div>
+
+    <script>
+        (async function () {
+            'use strict'
+
+            const useThrottle = (func, delay) => {
+                let flag = true;
+                return () => {
+                    const context = this;
+                    const args = arguments;
+                    if (flag) {
+                        func.apply(context, args);
+                        flag = false;
+                    }
+                    setTimeout(() => {
+                        flag = true;
+                    }, delay)
+                }
+            }
+
+            const getImagePath = (image) => {
+                return new Promise((resolve, reject) => {
+                    let selectedfile = new FileReader();
+                    selectedfile.readAsDataURL(image)
+                    selectedfile.addEventListener('load', () => {
+                        resolve(`${selectedfile.result}`)
+                    });
+                    selectedfile.addEventListener('error', () => {
+                        reject(`${selectedfile.error}`)
+                    });
+                }).then(value => value).catch(err => err)
+            }
+
+            const validate = (user) => {
+                const validate = {
+                    isValid: false,
+                    errors: [],
+                }
+                if (!user instanceof Object) return;
+                if (!(/^[A-Za-z]+$/.test(user.firstName?.trim()))) {
+                    validate.errors.push({
+                        name: 'firstName',
+                        message: '*special characters not allowed'
+                    })
+                }
+                if (!(/^[A-Za-z]+$/.test(user.lastName?.trim()))) {
+                    validate.errors.push({
+                        name: 'lastName',
+                        message: '*special characters not allowed'
+                    })
+                }
+                if (!user.gender) {
+                    validate.errors.push({
+                        name: 'gender',
+                        message: '*select gender'
+                    })
+                }
+                if (!(/^(A|B|AB|O)[+-]$/.test(user.bloodGroup?.trim()))) {
+                    validate.errors.push({
+                        name: 'bloodGroup',
+                        message: '*enter blood group'
+                    })
+                }
+                if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(user.email?.trim()))) {
+                    validate.errors.push({
+                        name: 'email',
+                        message: '*enter correct email'
+                    })
+                }
+                if (new Date(user.dob) > new Date()) {
+                    validate.errors.push({
+                        name: 'dob',
+                        message: '*enter dob'
+                    })
+                }
+                if (!(user.jobRole?.trim())) {
+                    validate.errors.push({
+                        name: 'jobRole',
+                        message: '*select jobRole group'
+                    })
+                }
+                if (user.image === "data:application/octet-stream;base64,") {
+                    validate.errors.push({
+                        name: 'image',
+                        message: '*select image '
+                    })
+                }
+                if (!/^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(user.phone)) {
+                    validate.errors.push({
+                        name: 'phone',
+                        message: '*enter correct phone'
+                    })
+                }
+                if(validate.errors.length === 0){
+                    validate.isValid = true;
+                }
+                return validate;
+            };
+
+            const user = {
+                dbUrl: `http://localhost:5000/users`,
+
+                add: async function (user) {
+                    let response = await fetch(this.dbUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify(user),
+                    });
+                    return await response.json();
+                },
+
+                getUser: async function (userId) {
+                    try {
+                        let response = await fetch(`${this.dbUrl}/${+userId}`, { method: 'GET' })
+                        if (response.status === 200 || response.ok) {
+                            const userData = await response.json()
+                            this.populateFields(userData)
+                            return userData;
+                        }
+                    } catch (error) {
+                        console.log(error);
+                        return null;
+                    }
+                },
+
+                put: async function (newUser, editID) {
+                    try {
+                        let response = await fetch(`${this.dbUrl}/${+editID}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json;charset=utf-8'
+                            },
+                            body: JSON.stringify(newUser),
+                        })
+                        if (response.ok || response.status === 200) {
+                            return await response.json();
+                        }
+                    } catch (error) {
+                        console.log(error);
+                        return null;
+                    }
+                },
+
+                setError: function (errors) {
+                    errors?.forEach(error => {
+                        document.querySelector(`[data-${error.name}Error]`).innerHTML = error.message;
+                    })
+                },
+
+                showLoader: function () {
+                    const loader = document.querySelector('#loader')
+                    loader.classList.remove('hidden')
+                    loader.classList.add('flex')
+                },
+                hideLoader: function () {
+                    const loader = document.querySelector('#loader')
+                    loader.classList.remove('flex')
+                    loader.classList.add('hidden')
+                },
+
+                bind: function () {
+                    const selectors = {
+                        userForm: document.querySelector('#userForm'),
+                        loader: document.querySelector('#loader'),
+                        imageBox: document.querySelector('[data-imageBox]'),
+                        imageInput: document.querySelector('[name="image"]'),
+                    }
+
+                    selectors.userForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const userData = new FormData(selectors.userForm);
+                        const newUser = Object.fromEntries(userData);
+                        
+                        
+                        let editId = new URLSearchParams(window.location.search).get('editId');
+                        if (editId) {
+                            let imagePath = await getImagePath(newUser.image)
+                            if(imagePath !== 'data:application/octet-stream;base64,'){
+                                newUser.image = imagePath;
+                                this.put(newUser, editId);
+                                this.showLoader()
+                                window.location.href = `adminPanel.html`
+                                return;
+                            }
+                            let savedUser = await this.getUser(editId)
+                            newUser.image = await savedUser.image;
+                            this.put(newUser, editId);
+                            this.showLoader()
+                            window.location.href = `adminPanel.html`
+                            return;
+                        }
+                        
+                        newUser.image = await getImagePath(newUser.image);
+                        if (validate(newUser).isValid) {
+                            this.add(newUser);
+                            console.log(newUser);
+                            this.showLoader()
+                            window.location.href = `adminPanel.html` 
+                            return;
+                        }
+                        this.setError(validate(newUser).errors)
+                    })
+
+                    selectors.imageInput.addEventListener('change', (e) => {
+                        let selectedfile = new FileReader();
+                        selectedfile.readAsDataURL(selectors.imageInput.files[0])
+                        selectedfile.addEventListener('load', () => {
+                            selectors.imageBox.src = selectedfile.result
+                        })
+                    })
+                },
+                populateFields: function (user) {
+                    for (const key in user) {
+                        if (key === 'firstName'
+                            || key === 'lastName'
+                            || key === 'phone'
+                            || key === 'email'
+                            || key === 'bloodGroup'
+                            || key === 'dob'
+                            || key === 'jobRole') {
+                            document.querySelector(`[name="${key}"]`).value = user[key]
+                        }
+                        if (key === 'gender') {
+                            document.querySelector(`[name="${key}"]`).checked = user[key]
+                        }
+                        if (key === 'image') {
+                            document.querySelector(`[data-imageBox]`).src = user[key]
+                        }
+                    }
+                },
+                render: function () {
+                    let editId = new URLSearchParams(window.location.search).get('editId');
+                    if (editId) {
+                        this.getUser(editId)
+                    }
+                    this.bind()
+                }
+            }
+            user.render()
+
+        })()
+    </script>
+</body>
+
+</html>

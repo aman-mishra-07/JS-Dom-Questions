@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+    "test": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch ",
+    "server": "json-server --watch db.json --port 5000"    
   },
   "author": "",
   "license": "ISC",

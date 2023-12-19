@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid api fetching </title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="w-full min-h-screen p-10 bg-slate-100" data-cont>
+        <h1 class="font-semibold text-2xl"> Rapid api</h1>
+    </div>
+    <script>
+        (async () => {
+            const url = 'https://imdb-top-100-movies.p.rapidapi.com';
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': 'a722dfc78fmshb3c596bcfe1eee7p1faf2ajsnc416c112e0dc',
+                    'X-RapidAPI-Host': 'imdb-top-100-movies.p.rapidapi.com'
+                }
+            };
+
+            const getData = async (url, options) => {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status === 200) {
+                        const result = await response.json();
+                        return result;
+                    }
+                } catch (error) {
+                    console.error(error);
+                    return null;
+                }
+            }
+            let newRes = await getData(url, options)
+            console.log(newRes);
+            let imgBox = document.querySelector('[data-cont]')
+            newRes.forEach(element => {
+                let image = document.createElement('img')
+                image.className = 'w-36 h-36 object-fit border'
+                image.src = element['big_image'];
+                imgBox.appendChild(image)
+            });
+        })()
+
+    </script>
+</body>
+
+</html>

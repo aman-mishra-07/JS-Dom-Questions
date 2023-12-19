@@ -9,9 +9,10 @@
             "name": "FillCarts shopping", //your business name
             "description": "Test Transaction",
             "image": 'https://t3.ftcdn.net/jpg/03/19/57/68/360_F_319576874_VN6uaMoGHMzbo6wBI5eFtBlIUaXvljH6.jpg',
-            "order_id": "order_NBNGcj5exJqoMH", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            "handler": function () {
-                window.location = 'paymentSucces.html'
+            "order_id": "order_NBoZduoFrqRiaY", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                window.location.href = `paymentSucces.html`
+                localStorage.setItem('handlerRes', JSON.stringify(response))
             },
             "prefill": {
                 "name": `${user.firstName} ${user.lastName}`, //your customer's name
@@ -31,6 +32,15 @@
         };
         localStorage.setItem('paymentDetails', JSON.stringify(options))
         var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        });
         rzp1.open();
     }
 
@@ -132,21 +142,21 @@
             })
         },
 
-        showMessage : function(msg){
+        showMessage: function (msg) {
             const msgModal = document.querySelector('#modal');
             const msgBox = document.querySelector('[data-msg]');
             const closeModalBtn = document.querySelector('[data-closeModal]');
             msgBox.innerHTML = msg;
-            msgModal.classList.toggle('hidden');
+            msgModal.classList.remove('hidden');
             msgModal.classList.add('flex');
             closeModalBtn.addEventListener('click', () => {
                 msgModal.classList.remove('flex');
                 msgModal.classList.add('hidden');
             })
-            setTimeout(()=>{
+            setTimeout(() => {
                 msgModal.classList.remove('flex');
                 msgModal.classList.add('hidden');
-            },3000)
+            }, 3000)
         },
 
         bind: function () {
@@ -161,11 +171,11 @@
                 state: document.querySelector('[name="state"]'),
                 zip: document.querySelector('[name="zip"]'),
                 phone: document.querySelector('[name="phone"]'),
-                increaseQtyBtn : document.querySelectorAll('[data-btn="incr"]'),
-                decreaseQtyBtn : document.querySelectorAll('[data-btn="decr"]'),
-                qtyInput : document.querySelectorAll('[data-qtyInput]'),
+                increaseQtyBtn: document.querySelectorAll('[data-btn="incr"]'),
+                decreaseQtyBtn: document.querySelectorAll('[data-btn="decr"]'),
+                qtyInput: document.querySelectorAll('[data-qtyInput]'),
             };
-            
+
             selectors.increaseQtyBtn.forEach((btn) => {
                 btn.addEventListener('click', (e) => {
                     let productId = e.target.closest('li').getAttribute('data-id');
@@ -183,7 +193,7 @@
             selectors.qtyInput.forEach((inputElem) => {
                 inputElem.addEventListener('blur', (e) => {
                     let productId = e.target.closest('li').getAttribute('data-id');
-                    this.setQty(productId,e.target.value)
+                    this.setQty(productId, e.target.value)
                     this.renderCart()
                 })
             })
@@ -198,7 +208,6 @@
                 if (this.cart.length === 0) return;
                 if (confirm('Are you sure?')) {
                     this.clearCart()
-                    this.renderCart()
                 }
             })
             selectors.firstName.addEventListener('blur', (e) => {
@@ -254,8 +263,8 @@
                 e.preventDefault()
                 let delivaryAddress = new FormData(selectors.delivaryform)
                 let user = Object.fromEntries(delivaryAddress);
-                if(this.cart.length === 0){
-                    this.showMessage('Your cart in empty')
+                if (this.cart.length === 0) {
+                    this.showMessage('Your cart in empty');
                     return;
                 }
                 if (validation(user).isValid && this.cart.length > 0) {

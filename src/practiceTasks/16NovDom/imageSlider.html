@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <section class="w-full h-screen bg-slate-100">
+
+        <div class="relative w-full h-full bg-slate-400 overflow-hidden">
+            <img src="" alt="" class="w-full h-full object-cover" data-bgImageCont>
+            <div
+                class="absolute z-10 bottom-5 w-full py-2 backdrop-blur-sm flex justify-between items-center gap-2 px-4">
+                <button type="button"
+                    data-previousButton
+                    class=" h-10 w-10 rounded-full text-white bg-slate-600 flex justify-center items-center">
+                    <svg class="w-6 h-6 rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                    </svg>
+                </button>
+                <ul class="flex-1 overflow-x-auto inline-flex gap-4 hidden-scroll backdrop-blur scroll-smooth" data-slider>
+
+                </ul>
+                <button type="button"
+                    data-nextButton
+                    class=" h-10 w-10 rounded-full text-white bg-slate-600 flex justify-center items-center">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+
+        (function(){
+            'use strict'
+            fetch('/dist/image.json').then((res => res.json())).then((val) => localStorage.setItem('images', JSON.stringify(val)) )
+            
+            const imageSlider = {
+                images : JSON.parse(localStorage.getItem('images')),
+
+                bgImageCont : document.querySelector('[data-bgImageCont]'),
+                slider : document.querySelector('[data-slider]'),
+                previousBtn : document.querySelector('[data-previousButton]'),
+                nextBtn : document.querySelector('[data-nextButton]'),
+                
+                setBg : function(bgImageUrl){
+                    this.bgImageCont.setAttribute('src', bgImageUrl)
+                },
+                
+                render : function(){
+                    this.setBg(this.images[0].url)
+                    this.images.map((item, index) => {
+                        let listItem = document.createElement('li')
+                        listItem.setAttribute('class','w-40 aspect-video shrink-0 overflow-hidden rounded-md border')
+
+                        let image = document.createElement('img');
+                        image.src = item.url;
+                        image.alt = item.title
+                        image.setAttribute('class','h-full w-full object-cover');
+                        
+                        image.addEventListener('click', (e) => {
+                            this.setBg(e.target.getAttribute('src'))
+                        })   
+                        listItem.appendChild(image)
+                        this.slider.appendChild(listItem)
+                    })
+
+                    this.previousBtn.addEventListener('click', (e) => {
+                        this.slider.scrollBy(-this.slider.offsetWidth/4,0)
+                    })
+                    this.nextBtn.addEventListener('click', (e) => {
+                        this.slider.scrollBy(this.slider.offsetWidth/4,0)
+                    })
+                    
+                } 
+            }
+            window.onload = imageSlider.render()
+        })()
+    </script>
+</body>
+
+</html>

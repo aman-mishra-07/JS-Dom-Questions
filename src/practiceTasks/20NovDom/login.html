@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="w-full min-h-screen flex items-center justify-center">
+        <div class="w-full max-w-xs border px-8 py-4 shadow-md space-y-4 rounded-lg">
+            <h1 class="text-2xl font-semibold text-center"></h1>
+            <h2 class="text-xl font-semibold text-center">Login</h2>
+            <form action="#" method="post" class="flex flex-col items-start gap-4">
+                <label for="email" class="font-semibold">Email Address</label>
+                <input type="email" name="email" id="email" class="border p-2 rounded w-full" required>
+
+                <label for="password" class="font-semibold">Password</label>
+                <input type="password" name="password" id="password" class="border p-2 rounded w-full" required>
+
+                <div class="flex items-center justify-between gap-2 text-sm">
+                    <input type="checkbox" name="remember" id="remember">
+                    <lable for="remember">Remember Me,</lable>
+                    <a href="#" class="text-blue-700">Forgot Password?</a>
+                </div>
+                <input type="submit" value="Sign in"
+                    class="w-full bg-blue-700 text-white text-sm font-semibold rounded p-2">
+            </form>
+
+
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            'use strict'
+        })()
+    </script>
+</body>
+
+</html>

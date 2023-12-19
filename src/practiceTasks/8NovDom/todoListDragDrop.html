@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body>
+    
+    <main class="px-8 md:px-20 py-10 w-full min-h-screen bg-slate-100 flex flex-col gap-4 md:gap-10">
+        <h1 class="text-3xl font-semibold">Todo List</h1>
+
+        <form id="todoForm">
+            <div class="w-full">
+                <div class="flex flex-col gap-2 md:flex-row md:items-center">
+                    <label for="newTask" class="font-semibold text-lg">Enter Task</label>
+                    <input type="text" name="newTask" id="newTask" class="px-4 py-2 shadow rounded-md w-full max-w-md" placeholder="type here...">
+                    <button type="submit" class="text-white rounded-md w-fit px-4 py-2 font-semibold bg-blue-500">Add Task</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="flex-1 flex gap-8 flex-wrap" data-taskContainor>
+            <div class="flex-1 border bg-white shadow-md rounded flex flex-col">
+                <h2 class="px-4 py-2 bg-slate-200 font-semibold">New Task</h2>
+                <ul class="space-y-2 p-2 flex-1" data-newTask>
+                    <li class="flex justify-between items-center border px-4 py-2  bg-blue-500 text-white font-semibold" draggable="true">
+                        <span>My Task</span>
+                        <button type="button" data-btnType="deleteBtn" class="border px-2 py-1 rounded-md">Delete</button>
+                    </li>  
+                </ul>
+            </div>
+            <div class="flex-1 border bg-white shadow-md rounded flex flex-col">
+                <h2 class="px-4 py-2 bg-slate-200 font-semibold">Pending</h2>
+                <ul class="space-y-2 p-2 flex-1" data-pendingTask>
+                    <li class="flex justify-between items-center border px-4 py-2 bg-red-500 text-white font-semibold">
+                        <span>My Task</span>
+                        <button type="button" data-btnType="deleteBtn" class="border px-2 py-1 rounded-md">Delete</button>
+                    </li>  
+                </ul>
+            </div>
+            <div class="flex-1 border bg-white  shadow-md rounded flex flex-col">
+                <h2 class="px-4 py-2 bg-slate-200 font-semibold">Completed </h2>
+                <ul class="flex-1 space-y-2 p-2 " data-completedTask>
+                    <li class="flex justify-between items-center border px-4 py-2  bg-green-500 text-white font-semibold">
+                        <span>My Task</span>
+                        <button type="button" data-btnType="deleteBtn" class="border px-2 py-1 rounded-md">Delete</button>
+                    </li>  
+                </ul>
+            </div>   
+        </div>
+    </main>
+
+    <script src="todo.js"></script>
+</body>
+</html>

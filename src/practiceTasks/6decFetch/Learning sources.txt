@@ -1,0 +1,88 @@
+Learning sources
+• https://javascript.info/
+• https://developer.mozilla.org/
+
+Week 1
+Topics
+	Revise Basic Fundamentals like Looping and Conditional Statements
+	Type of functions, Operators
+	JavaScript Fundamentals, Code Quality, code refactoring
+	Interaction with web, handling JavaScript with HTML
+Tasks
+	Colour the table diagonal by JavaScript
+	Simple Todo List
+	Progress Bar percentage
+	Click to change the background colour on web
+	Creating and handling Models
+
+Week 2
+Topics
+	Working with local storage
+	Dom manipulation, Event delegation, Bubbling and capturing.
+	Asynchronous JavaScript (async await, promises, setTimeout, setInterval)
+Tasks
+	Todo list with status, search and Filter
+	store todo data to local storage
+	Search and listing tasks
+	Creating new elements using JavaScript
+	Flip Kart like search recommendations
+	Error handling
+
+Week 3
+Topics
+	Mouse events, Moving the mouse(mouseover/out, mouseenter/leave)
+	Drag'n'Drop with mouse events
+	Pointer events
+	Keyboard: keydown and keyup, Scrolling
+	storing data in browser, local storage and session storage, working with JSON Data
+Tasks
+	Creating own Context menu
+	Range slider
+	Handle alert using set Timeout functions
+	Quiz slider and Quiz with steps
+	Working with JSON (creating dummy Json, Json to text, text to Json)
+	Form validation
+	Todo List with drag and drop functionality
+	Scroll to Top button handling on webpage
+	Login and Signup Form with validation
+	Login through Saved user credentials from local Storage
+	Create new user form login by new user with validations
+	Basic CRUD Handling with validation and store to local storage
+	Async JavaScript (async await, promises, setTimeout, setInterval)
+	Regex handling on Email and Phone in validation
+
+Week 4
+Topics
+	Fetch 
+	FormData
+	Fetch API from API
+	XMLHttpRequest
+	Network request
+	File Reader
+Tasks
+	Create filter from fetching data on category using API
+	Fetch data from API (FakeStoreAPI, DummyJSON)
+	Fetching Data from API
+	Sorting fetched data from Api
+	Fetching Data from API and Manipulating UI
+	Image Gallery With API Data
+
+Week 5
+Topics
+	Previous topic Revision
+
+Tasks
+	User Management System
+	Fetching Data from API and Filtering
+	Working with Rapid API
+	Add to cart Functionality
+	Cart product Listing 
+	
+
+Final test
+	Create product listing with API (Dummy JSON - https://dummyjson.com/)
+	Searching, filtering products and Image Viewer
+	Add product to cart page.
+	Checkout page with Signup form
+	Payment using payment gateway Razorpay.
+	After complete payement show all transaction history page

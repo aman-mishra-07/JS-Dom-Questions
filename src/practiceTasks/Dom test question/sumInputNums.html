@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sumInputNums</title>
+</head>
+<body>
+    <h1>Sum of Input Numbers</h1>
+    <p></p> 
+
+    <button type="button" onclick="newNum()">Enter Numbers</button>
+
+    <script>
+        let sum = [];
+        let result = 0;
+        
+        function newNum() {
+            let num = parseInt(prompt("Enter Number"))
+            if (Number.isInteger(num)) {
+                sum.push(num)
+                newNum();
+            }
+            else {
+                sum.forEach(n => result += n)
+                document.querySelector('p').innerText = result;
+            }
+        }
+    </script>
+</body>
+</html>

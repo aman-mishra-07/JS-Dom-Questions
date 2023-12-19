@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo list</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+
+<body>
+    <div class="w-full min-h-screen flex flex-col items-center gap-4 ">
+        <h1 class="text-4xl font-semibold">Todo List</h1>
+        <form id="todoForm" class="w-full max-w-md flex items-center gap-4">
+            <label for="taskInputBox" class="hidden">Enter Task</label>
+            <input type="text" name="taskInputBox" id="taskInputBox" class="border p-2 flex-1">
+
+            <button type="submit" class=" border p-2 bg-slate-50">Submit</button>
+        </form>
+        <!-- <div id="message" class=""></div> -->
+        <ul id="taskList" class="w-full max-w-md space-y-1">
+        </ul>
+        
+    </div>
+
+    <script>
+        'use strict'
+        const todo = {
+            todos: [],
+            taskInputBox: document.querySelector('#taskInputBox'),
+            submitbtn: document.querySelector('#todoForm button'),
+            taskList : document.querySelector('#taskList'),
+            addTask: function(val) {
+                this.todos.push(val)
+                this.taskInputBox.value = "";
+            }, 
+            removeTask : function(taskIndex,length = 1) {
+                this.todos.splice(taskIndex,length)
+            },
+            bind : function() {
+                if(this.taskInputBox.value.trim()){
+                    this.addTask(this.taskInputBox.value.trim())
+                    this.taskList.innerHTML = "";
+                    this.todos.forEach((task,index) => {
+                        let li = document.createElement('li');
+                        li.setAttribute('class', 'flex items-center justify-between border p-2');
+                        li.setAttribute('data-taskID', index + 1);
+
+                        let span = document.createElement('span');
+                        span.setAttribute('class','font-medium');
+                        
+                        let text = document.createTextNode(task)
+                        span.appendChild(text);
+
+                        let delBtn = document.createElement('button')
+                        let btnText = document.createTextNode('Remove')
+                        delBtn.setAttribute('class', 'border p-1 bg-slate-100')
+                        delBtn.appendChild(btnText);
+
+                        li.appendChild(span);
+                        li.appendChild(delBtn);
+                        this.taskList.appendChild(li);
+
+                    })   
+                }  
+                
+                    this.taskList.addEventListener('click', (e) => {
+                        e.target.children[0].style.textDecoration = 'line-through';
+                    })
+                    this.taskList.addEventListener('dblclick', (e) => {
+                        this.removeTask((e.target.parentNode.getAttribute('data-taskID')) - 1)
+                        e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+                    })
+                 
+               
+            }
+        }
+        document.querySelector('#todoForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            todo.bind();
+            
+        })
+       
+
+
+
+    </script>
+</body>
+
+</html>
+
+// tbody.addEventListener('click', (e) => {
+    //     if (e.target.getAttribute('data-btnType') === 'taskStatusBtn') {
+    //         e.target.style.backgroundColor = 'red';
+    //         e.target.innerHTML = 'incomplete';
+    //         e.target.parentNode.parentNode.children[0].style.textDecoration = 'line-through';
+    //     }
+    //     else if (e.target.getAttribute('data-btnType') === 'taskRemoveBtn') {
+    //         e.target.parentNode.parentNode.remove();
+    //     }
+    // })

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Color</title>
+    <style>
+        #box{
+            height: 200px;
+            width: 200px;
+            border: 1px solid black;
+            margin: 10px 0px;
+            /* transition: all ease-in-out 1s; */
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <div id="buttonBox">
+        <button type="button" data-color="red">Red</button>
+        <button type="button" data-color="blue">Blue</button>
+        <button type="button" data-color="green">Green</button>
+        <button type="button" data-color="yellow">yellow</button>
+        <button type="button" data-color="cyan">cyan</button>
+        <button type="button" data-color="pink">pink</button>
+        <button type="button" data-color="black">Green</button>
+        <button type="button" data-color="brown">Brown</button>
+    </div>
+
+    <script>
+    
+        const buttonBox = {
+            box : document.querySelector("#box"),
+            color : 'black',
+            render : function() {
+                box.style.backgroundColor = this.color; 
+            },
+            bind : function(params) {
+                const btnBox = document.querySelectorAll('#buttonBox button');
+                btnBox.forEach((item) => {
+                    console.log(item);
+                    item.addEventListener('click', (event) => {
+                        console.log(event);
+                        console.log(event.target.getAttribute('data-color'));
+                        this.color = event.target.getAttribute('data-color');
+                        this.render()
+                    })
+                    
+                })
+
+            }
+        }
+        buttonBox.bind();
+    
+
+    </script>
+</body>
+</html>
